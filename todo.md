@@ -99,3 +99,6 @@
 - [x] Record evidence that the three v2 world assets resolved to real images and that the final desktop/mobile views display them distinctly
 - [x] Verify with a repeatable browser assertion that desktop and mobile cards render three distinct final world asset URLs
 - [x] Update the price-tier regression expectation for the expanded nine-bundle catalogue and re-run the full test suite
+- [x] Audit production image URLs, CDN responses, and GitHub Pages asset routing for the broken product-card images
+- [x] Replace the broken image delivery path with a production-safe static asset route and add a regression assertion
+- [ ] Verify image loading on pixelgame.pro across desktop and mobile, then save and publish the fix

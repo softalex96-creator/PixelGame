@@ -25,7 +25,8 @@ describe("PixelGame storefront data", () => {
     for (const world of ["NovaVerse", "Arcane Realms", "Neon Circuit"] as const) {
       const worldProducts = filterProducts(products, "All", "", world);
       expect(worldProducts).toHaveLength(3);
-      expect(worldProducts.every((product) => product.image.startsWith("/manus-storage/"))).toBe(true);
+      expect(worldProducts.every((product) => product.image.startsWith("https://files.manuscdn.com/"))).toBe(true);
+      expect(worldProducts.every((product) => !product.image.startsWith("/manus-storage/"))).toBe(true);
       expect(worldProducts.every((product) => product.longDescription.includes("fictional") || product.longDescription.includes("original"))).toBe(true);
     }
   });

@@ -91,7 +91,7 @@ export default function Home() {
         <div className="hero-grid-pattern" />
         <div className="hero-pulse pulse-one" />
         <div className="hero-pulse pulse-two" />
-        <img className="loadout-hero-image" src="/manus-storage/pixelgame-arcade-loadout-hero_bdf826df.png" alt="" aria-hidden="true" />
+        <img className="loadout-hero-image" src="https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/MrhPryEQKFgGvutG.png" alt="" aria-hidden="true" />
         <div className="container loadout-hero-layout">
           <div className="hero-copy">
             <p className="eyebrow eyebrow-light"><Sparkles size={14} /> {t.heroEyebrow}</p>

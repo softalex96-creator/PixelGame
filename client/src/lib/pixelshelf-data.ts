@@ -49,9 +49,9 @@ export type SearchSuggestion = {
   query: string;
 };
 
-const novaImage = "/manus-storage/pixelgame-world-novaverse-v2_89f75f77.png";
-const arcaneImage = "/manus-storage/pixelgame-world-arcane-v2_d0db31c9.png";
-const arcadeImage = "/manus-storage/pixelgame-world-neon-v2_f2a96e53.png";
+const novaImage = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/MQfMAJcQaECgYWXj.png";
+const arcaneImage = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/AzvJOJBbUFPCUsIJ.png";
+const arcadeImage = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/ygYQmPsRXarhNggd.png";
 
 export const products: MarketplaceProduct[] = [
   {

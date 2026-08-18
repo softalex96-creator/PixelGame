@@ -2,10 +2,11 @@ import assert from "node:assert/strict";
 import { chromium } from "playwright";
 
 const storefrontUrl = process.env.PIXELGAME_STOREFRONT_URL ?? "http://127.0.0.1:3000/";
-const expectedAssetNames = [
-  "pixelgame-world-novaverse-v2_89f75f77.png",
-  "pixelgame-world-arcane-v2_d0db31c9.png",
-  "pixelgame-world-neon-v2_f2a96e53.png",
+const expectedHeroUrl = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/MrhPryEQKFgGvutG.png";
+const expectedAssetUrls = [
+  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/MQfMAJcQaECgYWXj.png",
+  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/AzvJOJBbUFPCUsIJ.png",
+  "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/ygYQmPsRXarhNggd.png",
 ];
 const runs = [
   { name: "desktop", viewport: { width: 1280, height: 720 } },
@@ -18,13 +19,19 @@ async function verifyViewport(browser, { name, viewport }) {
   page.setDefaultTimeout(15_000);
 
   await page.goto(`${storefrontUrl}#/`, { waitUntil: "networkidle" });
+  const hero = page.locator(".loadout-hero-image");
+  await hero.waitFor();
+  const heroSource = await hero.evaluate((image) => image.currentSrc || image.getAttribute("src") || "");
+  const heroDimensions = await hero.evaluate((image) => ({ complete: image.complete, width: image.naturalWidth, height: image.naturalHeight }));
+  assert.equal(heroSource, expectedHeroUrl, `${name}: hero must use the final public CDN asset`);
+  assert.ok(heroDimensions.complete && heroDimensions.width > 0 && heroDimensions.height > 0, `${name}: hero must resolve to a real image`);
+
   const directoryImages = page.locator(".world-directory-card img");
   await assert.doesNotReject(() => directoryImages.first().waitFor());
   assert.equal(await directoryImages.count(), 3, `${name}: the world directory must display three world images`);
 
   const sources = await directoryImages.evaluateAll((images) => images.map((image) => image.currentSrc || image.getAttribute("src") || ""));
-  const assetNames = sources.map((source) => new URL(source).pathname.split("/").pop());
-  assert.deepEqual(assetNames, expectedAssetNames, `${name}: directory image order must match the three final world assets`);
+  assert.deepEqual(sources, expectedAssetUrls, `${name}: directory image order must match the three final public CDN assets`);
   assert.equal(new Set(sources).size, 3, `${name}: world directory assets must be distinct`);
 
   const rendered = await directoryImages.evaluateAll((images) => images.map((image) => ({ complete: image.complete, width: image.naturalWidth, height: image.naturalHeight })));
