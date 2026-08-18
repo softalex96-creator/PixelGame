@@ -5,7 +5,7 @@ type AuthStatus = "idle" | "loading" | "ready" | "error";
 
 interface AuthContextValue {
   authAvailable: boolean;
-  signInWithGoogle: () => void;
+  signIn: (provider: ExternalIdentity["provider"]) => void;
   signOut: () => Promise<void>;
   status: AuthStatus;
   user: ExternalIdentity | null;
@@ -36,9 +36,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     void loadSession();
   }, [loadSession]);
 
-  const signInWithGoogle = useCallback(() => {
+  const signIn = useCallback((provider: ExternalIdentity["provider"]) => {
     if (!config.enabled) return;
-    window.location.assign(providerLoginUrl(config.authOrigin, "google"));
+    window.location.assign(providerLoginUrl(config.authOrigin, provider));
   }, []);
 
   const signOut = useCallback(async () => {
@@ -52,7 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const value = useMemo(() => ({ authAvailable: config.enabled, signInWithGoogle, signOut, status, user }), [signInWithGoogle, signOut, status, user]);
+  const value = useMemo(() => ({ authAvailable: config.enabled, signIn, signOut, status, user }), [signIn, signOut, status, user]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

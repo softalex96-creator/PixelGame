@@ -4,8 +4,8 @@ export interface AuthConfig {
 }
 
 export interface ExternalIdentity {
-  email: string;
-  provider: "google";
+  email?: string;
+  provider: "google" | "steam";
   sub: string;
 }
 

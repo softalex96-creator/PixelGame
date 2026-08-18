@@ -8,7 +8,8 @@ describe("static storefront auth client", () => {
     expect(resolveAuthConfig(undefined, "https://auth.pixelgame.pro").enabled).toBe(false);
   });
 
-  it("uses only the fixed Google endpoint for the enabled provider", () => {
+  it("uses fixed server-side endpoints for the enabled providers", () => {
     expect(providerLoginUrl("https://auth.pixelgame.pro", "google")).toBe("https://auth.pixelgame.pro/v1/login/google");
+    expect(providerLoginUrl("https://auth.pixelgame.pro", "steam")).toBe("https://auth.pixelgame.pro/v1/login/steam");
   });
 });

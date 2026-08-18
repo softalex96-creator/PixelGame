@@ -5,6 +5,7 @@ import {
   createOAuthState,
   readOAuthState,
   securityHeaders,
+  steamIdFromClaimedId,
 } from "../cloudflare/oauth-worker/src/security";
 
 describe("Cloudflare OAuth security helpers", () => {
@@ -13,11 +14,11 @@ describe("Cloudflare OAuth security helpers", () => {
   it("issues a short-lived signed state and rejects a tampered state cookie", async () => {
     const now = 1_700_000_000_000;
     const { cookieValue, payload } = await createOAuthState("google", secret, now);
-    const restored = await readOAuthState(cookieValue, secret, now + 60_000);
+    const restored = await readOAuthState(cookieValue, secret, "google", now + 60_000);
 
     expect(restored).toMatchObject({ provider: "google", state: payload.state, nonce: payload.nonce });
-    expect(await readOAuthState(`${cookieValue}x`, secret, now + 60_000)).toBeNull();
-    expect(await readOAuthState(cookieValue, secret, now + 5 * 60 * 1000)).toBeNull();
+    expect(await readOAuthState(`${cookieValue}x`, secret, "google", now + 60_000)).toBeNull();
+    expect(await readOAuthState(cookieValue, secret, "google", now + 5 * 60 * 1000)).toBeNull();
   });
 
   it("creates an S256 PKCE challenge without leaking the verifier", async () => {
@@ -34,5 +35,11 @@ describe("Cloudflare OAuth security helpers", () => {
 
   it("returns to the exact hash-account route without OAuth query text", () => {
     expect(accountReturnUrl("https://pixelgame.pro")).toBe("https://pixelgame.pro/#/account");
+  });
+
+  it("accepts only a canonical 17-digit Steam OpenID claimed ID", () => {
+    expect(steamIdFromClaimedId("https://steamcommunity.com/openid/id/76561198000000000")).toBe("76561198000000000");
+    expect(steamIdFromClaimedId("http://steamcommunity.com/openid/id/76561198000000000")).toBeNull();
+    expect(steamIdFromClaimedId("https://steamcommunity.com/openid/id/1234")).toBeNull();
   });
 });

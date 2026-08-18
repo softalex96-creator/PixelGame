@@ -3,7 +3,7 @@ export const SESSION_COOKIE = "__Host-pixelgame-session";
 const textEncoder = new TextEncoder();
 const textDecoder = new TextDecoder();
 
-export type OAuthProvider = "google";
+export type OAuthProvider = "google" | "steam";
 
 export interface OAuthStatePayload {
   provider: OAuthProvider;
@@ -15,7 +15,7 @@ export interface OAuthStatePayload {
 
 export interface BuyerSession {
   sub: string;
-  email: string;
+  email?: string;
   provider: OAuthProvider;
   expiresAt: number;
 }
@@ -82,10 +82,10 @@ export async function createOAuthState(provider: OAuthProvider, sessionSecret: s
   return { payload, cookieValue: await signValue(encodedPayload, sessionSecret) };
 }
 
-export async function readOAuthState(cookieValue: string | undefined, sessionSecret: string, now = Date.now()): Promise<OAuthStatePayload | null> {
+export async function readOAuthState(cookieValue: string | undefined, sessionSecret: string, provider: OAuthProvider, now = Date.now()): Promise<OAuthStatePayload | null> {
   if (!cookieValue) return null;
   const payload = await readSignedValue<OAuthStatePayload>(cookieValue, sessionSecret);
-  if (!payload || payload.expiresAt <= now || payload.provider !== "google") return null;
+  if (!payload || payload.expiresAt <= now || payload.provider !== provider) return null;
   return payload;
 }
 
@@ -101,7 +101,8 @@ export async function createBuyerSession(session: BuyerSession, sessionSecret: s
 export async function readBuyerSession(cookieValue: string | undefined, sessionSecret: string, now = Date.now()): Promise<BuyerSession | null> {
   if (!cookieValue) return null;
   const session = await readSignedValue<BuyerSession>(cookieValue, sessionSecret);
-  if (!session || session.expiresAt <= now || session.provider !== "google" || !session.sub || !session.email) return null;
+  if (!session || session.expiresAt <= now || (session.provider !== "google" && session.provider !== "steam") || !session.sub) return null;
+  if (session.provider === "google" && !session.email) return null;
   return session;
 }
 
@@ -121,6 +122,11 @@ export function clearCookie(name: string): string {
 
 export function accountReturnUrl(publicOrigin: string): string {
   return `${publicOrigin}/#/account`;
+}
+
+export function steamIdFromClaimedId(claimedId: string | null): string | null {
+  const match = claimedId?.match(/^https:\/\/steamcommunity\.com\/openid\/id\/(\d{17})$/);
+  return match?.[1] ?? null;
 }
 
 export function securityHeaders(): Headers {

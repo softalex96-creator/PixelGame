@@ -69,7 +69,7 @@
 - [x] Verify the enhanced checkout, account, and catalog on desktop and mobile, then save and deploy the update
 - [x] Diagnose and fix the mismatch where cart additions are not reflected as orders in the buyer account
 - [x] Add a persistent RUB, EUR, and USD currency selector with localized price formatting across catalog, cart, checkout, and account
-- [ ] Complete secure Steam, Apple ID, and Telegram implementations or retain their clearly labelled unavailable state until provider-specific credentials are configured
+- [x] Complete secure Steam, Apple ID, and Telegram implementations or retain their clearly labelled unavailable state until provider-specific credentials are configured
 - [x] Run and record a passing test command that includes buyer-state order visibility, currency selection, and the new sign-in coverage
 - [ ] Verify the new account, currency, and order flows across desktop and mobile, then save and deploy the update
 - [ ] Configure each approved external sign-in provider through the user-authorized developer account sessions and securely register the resulting credentials

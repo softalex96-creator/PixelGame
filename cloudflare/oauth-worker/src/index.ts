@@ -13,6 +13,7 @@ import {
   securityHeaders,
   serializeCookie,
   SESSION_COOKIE,
+  steamIdFromClaimedId,
 } from "./security";
 
 interface RateLimitBinding {
@@ -29,6 +30,7 @@ interface Env {
 }
 
 const googleJwks = createRemoteJWKSet(new URL("https://www.googleapis.com/oauth2/v3/certs"));
+const steamOpenIdEndpoint = "https://steamcommunity.com/openid/login";
 
 function redirect(location: string, cookies: string[] = []): Response {
   const headers = securityHeaders();
@@ -81,7 +83,7 @@ async function finishGoogleLogin(request: Request, env: Env): Promise<Response> 
   if (limited) return limited;
 
   const url = new URL(request.url);
-  const state = await readOAuthState(readCookie(request, OAUTH_STATE_COOKIE), env.SESSION_HMAC_KEY);
+  const state = await readOAuthState(readCookie(request, OAUTH_STATE_COOKIE), env.SESSION_HMAC_KEY, "google");
   const suppliedState = url.searchParams.get("state");
   const code = url.searchParams.get("code");
 
@@ -129,6 +131,60 @@ async function finishGoogleLogin(request: Request, env: Env): Promise<Response> 
   }
 }
 
+async function startSteamLogin(request: Request, env: Env): Promise<Response> {
+  const limited = await rateLimit(request, env, "steam-start");
+  if (limited) return limited;
+
+  const { payload, cookieValue } = await createOAuthState("steam", env.SESSION_HMAC_KEY);
+  const callbackUrl = `${env.AUTH_ORIGIN}/v1/callback/steam`;
+  const returnTo = `${callbackUrl}?state=${encodeURIComponent(payload.state)}`;
+  const authorizationUrl = new URL(steamOpenIdEndpoint);
+  authorizationUrl.search = new URLSearchParams({
+    "openid.claimed_id": "http://specs.openid.net/auth/2.0/identifier_select",
+    "openid.identity": "http://specs.openid.net/auth/2.0/identifier_select",
+    "openid.mode": "checkid_setup",
+    "openid.ns": "http://specs.openid.net/auth/2.0",
+    "openid.realm": env.AUTH_ORIGIN,
+    "openid.return_to": returnTo,
+  }).toString();
+  return redirect(authorizationUrl.toString(), [serializeCookie(OAUTH_STATE_COOKIE, cookieValue, 300)]);
+}
+
+async function finishSteamLogin(request: Request, env: Env): Promise<Response> {
+  const limited = await rateLimit(request, env, "steam-callback");
+  if (limited) return limited;
+
+  const url = new URL(request.url);
+  const state = await readOAuthState(readCookie(request, OAUTH_STATE_COOKIE), env.SESSION_HMAC_KEY, "steam");
+  const suppliedState = url.searchParams.get("state");
+  const claimedId = url.searchParams.get("openid.claimed_id");
+  const steamId = steamIdFromClaimedId(claimedId);
+  const expectedReturnTo = `${env.AUTH_ORIGIN}/v1/callback/steam?state=${encodeURIComponent(state?.state ?? "")}`;
+
+  if (!state || state.state !== suppliedState || !steamId || url.searchParams.get("openid.op_endpoint") !== steamOpenIdEndpoint || url.searchParams.get("openid.return_to") !== expectedReturnTo || url.searchParams.get("openid.identity") !== claimedId) {
+    return redirect(accountReturnUrl(env.PUBLIC_ORIGIN), [clearCookie(OAUTH_STATE_COOKIE)]);
+  }
+
+  const verification = new URLSearchParams();
+  url.searchParams.forEach((value, key) => {
+    if (key.startsWith("openid.") && key !== "openid.mode") verification.append(key, value);
+  });
+  verification.set("openid.mode", "check_authentication");
+  const response = await fetch(steamOpenIdEndpoint, {
+    body: verification,
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    method: "POST",
+  });
+  const verified = response.ok && /(^|\n)is_valid:true(\n|$)/.test(await response.text());
+  if (!verified) return redirect(accountReturnUrl(env.PUBLIC_ORIGIN), [clearCookie(OAUTH_STATE_COOKIE)]);
+
+  const sessionCookie = await createBuyerSession({ expiresAt: Date.now() + 8 * 60 * 60 * 1000, provider: "steam", sub: steamId }, env.SESSION_HMAC_KEY);
+  return redirect(accountReturnUrl(env.PUBLIC_ORIGIN), [
+    clearCookie(OAUTH_STATE_COOKIE),
+    serializeCookie(SESSION_COOKIE, sessionCookie, 8 * 60 * 60),
+  ]);
+}
+
 async function getSession(request: Request, env: Env): Promise<Response> {
   if (!isExpectedOrigin(request, env.PUBLIC_ORIGIN)) return json({ error: "origin_forbidden" }, 403);
   const session = await readBuyerSession(readCookie(request, SESSION_COOKIE), env.SESSION_HMAC_KEY);
@@ -149,6 +205,8 @@ export default {
     if (request.method === "OPTIONS" && url.pathname === "/v1/session") return new Response(null, { status: 204, headers: corsHeaders(env.PUBLIC_ORIGIN) });
     if (request.method === "GET" && url.pathname === "/v1/login/google") return startGoogleLogin(request, env);
     if (request.method === "GET" && url.pathname === "/v1/callback/google") return finishGoogleLogin(request, env);
+    if (request.method === "GET" && url.pathname === "/v1/login/steam") return startSteamLogin(request, env);
+    if (request.method === "GET" && url.pathname === "/v1/callback/steam") return finishSteamLogin(request, env);
     if (request.method === "GET" && url.pathname === "/v1/session") return getSession(request, env);
     if (request.method === "POST" && url.pathname === "/v1/logout") return logout(request, env);
     return json({ error: "not_found" }, 404);
