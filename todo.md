@@ -49,5 +49,5 @@
 - [x] Verify the renamed desktop and mobile storefront identity
 - [x] Save a review checkpoint for the renamed PixelGame storefront
 - [x] Prepare the verified PixelGame project for export to the confirmed GitHub repository
-- [ ] Push the current PixelGame project to softalex96-creator/PixelGame and verify the export
-- [ ] Confirm the newly configured GitHub integration can authenticate the PixelGame export
+- [x] Push the current PixelGame project to softalex96-creator/PixelGame and verify the export
+- [x] Confirm the newly configured GitHub integration can authenticate the PixelGame export
