@@ -1,13 +1,15 @@
 import { useLocalCart } from "@/contexts/LocalCartContext";
+import { useFavourites } from "@/contexts/FavouritesContext";
 import { getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
 import { formatPrice, getProductBySlug } from "@/lib/pixelshelf-data";
-import { ArrowLeft, Check, Download, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Download, Heart, ShoppingBag, Sparkles } from "lucide-react";
 import { Link, useRoute } from "wouter";
 
 export default function ProductDetail() {
   const [, params] = useRoute("/product/:slug");
   const product = getProductBySlug(params?.slug ?? "");
   const { addItem, openCart } = useLocalCart();
+  const { isFavourite, toggleFavourite } = useFavourites();
   const { locale, t } = useLanguage();
 
   if (!product) {
@@ -52,6 +54,7 @@ export default function ProductDetail() {
             <div className="detail-actions">
               <button className="button button-primary instant-button" onClick={addToCart}><Download size={18} /> {t.instantDownload}</button>
               <button className="button button-outline" onClick={buyNow}><ShoppingBag size={17} /> {t.addToTopUp}</button>
+              <button className={`button button-outline favorite-detail ${isFavourite(product.id) ? "is-saved" : ""}`} onClick={() => toggleFavourite(product.id)} aria-pressed={isFavourite(product.id)}><Heart size={17} fill={isFavourite(product.id) ? "currentColor" : "none"} /> {isFavourite(product.id) ? t.removeSavedBundle : t.saveBundle}</button>
             </div>
             <div className="includes-card">
               <p>{t.included}</p>

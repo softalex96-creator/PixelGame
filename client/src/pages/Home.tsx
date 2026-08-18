@@ -1,12 +1,15 @@
 import { creators, categories, filterProducts, formatPrice, gameFilters, products, type Category, type GameFilter, type MarketplaceProduct } from "@/lib/pixelshelf-data";
-import { ArrowRight, ChevronRight, Search, ShoppingBag, Sparkles } from "lucide-react";
+import { ArrowRight, ChevronRight, Heart, ShoppingBag, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import { useLocalCart } from "@/contexts/LocalCartContext";
 import { getLocalizedCategory, getLocalizedCreatorRole, getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
+import { useFavourites } from "@/contexts/FavouritesContext";
+import SearchAutocomplete from "@/components/SearchAutocomplete";
 
 function ProductCard({ product }: { product: MarketplaceProduct }) {
   const { addItem } = useLocalCart();
+  const { isFavourite, toggleFavourite } = useFavourites();
   const { locale, t } = useLanguage();
   const asset = getLocalizedProduct(product, locale);
   return (
@@ -15,6 +18,9 @@ function ProductCard({ product }: { product: MarketplaceProduct }) {
         <img src={asset.image} alt={`${asset.title} preview`} />
         <span className="product-category-badge">{asset.game}</span>
       </Link>
+      <button className={`favourite-button ${isFavourite(product.id) ? "is-saved" : ""}`} onClick={() => toggleFavourite(product.id)} aria-label={isFavourite(product.id) ? `${t.removeSavedBundle}: ${asset.title}` : `${t.saveBundle}: ${asset.title}`} aria-pressed={isFavourite(product.id)}>
+        <Heart size={17} fill={isFavourite(product.id) ? "currentColor" : "none"} />
+      </button>
       <div className="product-card-copy">
         <p className="creator-small"><span>{asset.creatorInitials}</span>{asset.game}</p>
         <div className="product-title-row">
@@ -38,7 +44,9 @@ export default function Home() {
   const [category, setCategory] = useState<Category | "All">(initialCategory);
   const [game, setGame] = useState<GameFilter>("All games");
   const [query, setQuery] = useState(params.get("search") ?? "");
-  const visibleProducts = useMemo(() => filterProducts(products, category, query, game), [category, game, query]);
+  const [showSaved, setShowSaved] = useState(params.get("saved") === "true");
+  const { favouriteIds } = useFavourites();
+  const visibleProducts = useMemo(() => filterProducts(products, category, query, game).filter((product) => !showSaved || favouriteIds.includes(product.id)), [category, favouriteIds, game, query, showSaved]);
   const { locale, t } = useLanguage();
 
   function browseAssets() {
@@ -56,11 +64,7 @@ export default function Home() {
             <p className="eyebrow eyebrow-light"><Sparkles size={14} /> {t.heroEyebrow}</p>
             <h1>{t.heroHeading} <em>{t.heroAccent}</em></h1>
             <p className="hero-description">{t.heroDescription}</p>
-            <div className="hero-search">
-              <Search size={20} />
-              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t.searchGames} aria-label={t.searchCurrencyPacks} />
-              <button onClick={browseAssets} aria-label={t.search}>{t.search}</button>
-            </div>
+            <SearchAutocomplete value={query} onChange={setQuery} onSubmit={browseAssets} onSelect={(suggestion) => { setQuery(suggestion.query); document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }); }} placeholder={t.searchGames} ariaLabel={t.searchCurrencyPacks} submitLabel={t.search} />
             <button className="button button-hero call-to-action" onClick={browseAssets}>{t.browseCurrencyPacks} <ArrowRight size={18} /></button>
           </div>
           <div className="hero-art" aria-hidden="true">
@@ -102,6 +106,7 @@ export default function Home() {
                 ))}
               </div>
             </div>
+            <button className={`saved-filter ${showSaved ? "is-active" : ""}`} onClick={() => setShowSaved((current) => !current)} aria-pressed={showSaved}><Heart size={14} fill={showSaved ? "currentColor" : "none"} /> {showSaved ? t.showAllPacks : t.showSaved}</button>
           </div>
           <span className="result-count">{visibleProducts.length} {t.packs}</span>
         </div>
@@ -111,7 +116,7 @@ export default function Home() {
             {visibleProducts.map((product) => <ProductCard key={product.id} product={product} />)}
           </div>
         ) : (
-          <div className="catalog-empty"><Sparkles size={22} /><h3>{t.noPacks}</h3><p>{t.noPacksCopy}</p></div>
+          <div className="catalog-empty"><Sparkles size={22} /><h3>{showSaved ? t.noSavedBundles : t.noPacks}</h3><p>{showSaved ? t.noSavedBundlesCopy : t.noPacksCopy}</p></div>
         )}
       </section>
 

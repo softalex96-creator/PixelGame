@@ -27,9 +27,17 @@
 - [x] Add a persistent English/Russian language selector in the storefront navigation
 - [x] Localize buyer-facing navigation, catalog, product-detail, and cart interface text into English and Russian
 - [x] Add automated coverage for language selection and verify both language views on desktop and mobile
-- [ ] Save a review checkpoint for the localized storefront
+- [x] Save a review checkpoint for the localized storefront
 - [x] Localize remaining Russian buyer-facing catalog labels and featured-world role copy
 - [x] Add unit coverage for persisted and query-parameter language initialization
 - [x] Verify English and Russian storefront views on desktop and mobile before saving the localized checkpoint
 - [x] Verify the English desktop product-detail view and localized cart UI in English and Russian at desktop and mobile viewports
-- [ ] Save the localized review checkpoint after full bilingual viewport verification
+- [x] Save the localized review checkpoint after full bilingual viewport verification
+- [x] Add a game-friendly dark/light theme selector with a persisted preference
+- [x] Implement persistent favourites for currency bundles, including product-card and product-detail controls
+- [x] Add search autocomplete for games, currencies, and bundle names with keyboard-friendly interaction
+- [x] Create and validate a reusable skill that captures this storefront workflow
+- [x] Add and run automated coverage for theme, favourites, and autocomplete helpers
+- [x] Verify the enhanced storefront in both themes at desktop and mobile viewports
+- [ ] Save a review checkpoint for the verified enhanced storefront
+- [x] Verify cart drawer, favourites controls, autocomplete panel, and product detail in both themes across desktop and mobile

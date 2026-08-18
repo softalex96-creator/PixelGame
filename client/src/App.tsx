@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import CartDrawer from "@/components/CartDrawer";
 import StorefrontNav from "@/components/StorefrontNav";
 import { LocalCartProvider } from "@/contexts/LocalCartContext";
+import { FavouritesProvider } from "@/contexts/FavouritesContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import NotFound from "@/pages/NotFound";
@@ -32,13 +33,15 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="light">
+      <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <LanguageProvider>
-            <LocalCartProvider>
-              <Toaster />
-              <Router />
-            </LocalCartProvider>
+            <FavouritesProvider>
+              <LocalCartProvider>
+                <Toaster />
+                <Router />
+              </LocalCartProvider>
+            </FavouritesProvider>
           </LanguageProvider>
         </TooltipProvider>
       </ThemeProvider>

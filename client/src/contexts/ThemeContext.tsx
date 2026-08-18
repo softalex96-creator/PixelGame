@@ -1,11 +1,11 @@
-import React, { createContext, useContext, useEffect, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 type Theme = "light" | "dark";
 
 interface ThemeContextType {
   theme: Theme;
-  toggleTheme?: () => void;
-  switchable: boolean;
+  setTheme: (theme: Theme) => void;
+  toggleTheme: () => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
@@ -13,43 +13,35 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 interface ThemeProviderProps {
   children: React.ReactNode;
   defaultTheme?: Theme;
-  switchable?: boolean;
+}
+
+export function resolveInitialTheme(storedTheme: string | null, fallback: Theme = "dark", search = ""): Theme {
+  const requestedTheme = new URLSearchParams(search).get("theme");
+  if (requestedTheme === "light" || requestedTheme === "dark") return requestedTheme;
+  return storedTheme === "light" || storedTheme === "dark" ? storedTheme : fallback;
 }
 
 export function ThemeProvider({
   children,
-  defaultTheme = "light",
-  switchable = false,
+  defaultTheme = "dark",
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (switchable) {
-      const stored = localStorage.getItem("theme");
-      return (stored as Theme) || defaultTheme;
-    }
-    return defaultTheme;
-  });
+  const [theme, setTheme] = useState<Theme>(() => typeof window === "undefined" ? defaultTheme : resolveInitialTheme(window.localStorage.getItem("pixelshelf:theme"), defaultTheme, window.location.search));
 
   useEffect(() => {
     const root = document.documentElement;
-    if (theme === "dark") {
-      root.classList.add("dark");
-    } else {
-      root.classList.remove("dark");
-    }
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
+    window.localStorage.setItem("pixelshelf:theme", theme);
+  }, [theme]);
 
-    if (switchable) {
-      localStorage.setItem("theme", theme);
-    }
-  }, [theme, switchable]);
-
-  const toggleTheme = switchable
-    ? () => {
-        setTheme(prev => (prev === "light" ? "dark" : "light"));
-      }
-    : undefined;
+  const value = useMemo(() => ({
+    theme,
+    setTheme,
+    toggleTheme: () => setTheme((current) => current === "light" ? "dark" : "light"),
+  }), [theme]);
 
   return (
-    <ThemeContext.Provider value={{ theme, toggleTheme, switchable }}>
+    <ThemeContext.Provider value={value}>
       {children}
     </ThemeContext.Provider>
   );

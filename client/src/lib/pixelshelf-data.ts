@@ -31,6 +31,15 @@ export type Creator = {
   accent: "violet" | "cyan" | "indigo" | "lilac";
 };
 
+export type SearchSuggestion = {
+  id: string;
+  label: string;
+  detail: string;
+  type: "bundle" | "game" | "currency";
+  productSlug: string;
+  query: string;
+};
+
 const novaImage = "/manus-storage/pixelshelf-nova-credits_ae3936e0.png";
 const arcaneImage = "/manus-storage/pixelshelf-arcane-coins_a7bfbc0d.png";
 const arcadeImage = "/manus-storage/pixelshelf-arcade-tokens_c1c32d6d.png";
@@ -176,6 +185,29 @@ export function filterProducts(
     const searchable = `${product.title} ${product.category} ${product.game} ${product.currency} ${product.bundleLabel} ${product.creator} ${product.description}`.toLowerCase();
     return matchesCategory && matchesGame && (!normalizedQuery || searchable.includes(normalizedQuery));
   });
+}
+
+export function getSearchSuggestions(query: string, limit = 5): SearchSuggestion[] {
+  const normalizedQuery = query.trim().toLowerCase();
+  if (!normalizedQuery) return [];
+
+  const candidates: SearchSuggestion[] = products.flatMap((product) => [
+    { id: `${product.id}:bundle`, label: product.title, detail: `${product.game} · ${product.bundleLabel}`, type: "bundle" as const, productSlug: product.slug, query: product.title },
+    { id: `${product.id}:game`, label: product.game, detail: `${product.currency} · ${product.title}`, type: "game" as const, productSlug: product.slug, query: product.game },
+    { id: `${product.id}:currency`, label: product.currency, detail: `${product.game} · ${product.bundleLabel}`, type: "currency" as const, productSlug: product.slug, query: product.currency },
+  ]);
+
+  const uniqueCandidates = candidates.filter((candidate, index, items) => items.findIndex((item) => item.label === candidate.label && item.type === candidate.type) === index);
+  return uniqueCandidates
+    .filter((candidate) => `${candidate.label} ${candidate.detail}`.toLowerCase().includes(normalizedQuery))
+    .sort((left, right) => {
+      const leftLabel = left.label.toLowerCase();
+      const rightLabel = right.label.toLowerCase();
+      const leftRank = leftLabel === normalizedQuery ? 0 : leftLabel.startsWith(normalizedQuery) ? 1 : 2;
+      const rightRank = rightLabel === normalizedQuery ? 0 : rightLabel.startsWith(normalizedQuery) ? 1 : 2;
+      return leftRank - rightRank || left.label.localeCompare(right.label);
+    })
+    .slice(0, limit);
 }
 
 export function formatPrice(price: number) {
