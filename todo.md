@@ -90,3 +90,8 @@
 - [x] Record Steam production route and assertion-validation verification as accepted without account-specific end-to-end login
 - [x] Expose the verified production browser smoke test through a package command for future release checks
 - [x] Make the live Shopify smoke test accurately handle the intentionally empty catalog without weakening configured-catalog validation
+- [ ] Save a pre-redesign backup checkpoint of the current PixelGame storefront and document its restore point
+- [ ] Analyze the supplied Kupikod reference for catalog structure, merchandising patterns, and interaction principles without copying protected visual assets
+- [ ] Define original PixelGame catalog content, category hierarchy, and licensed-safe icon/image direction informed by the reference analysis
+- [ ] Redesign the storefront experience and populate the catalog with original game-currency offerings and visuals
+- [ ] Add or update tests for the revised catalogue data and verify the redesigned experience on desktop and mobile before publishing
