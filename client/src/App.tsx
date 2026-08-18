@@ -1,38 +1,40 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import CartDrawer from "@/components/CartDrawer";
+import StorefrontNav from "@/components/StorefrontNav";
+import { LocalCartProvider } from "@/contexts/LocalCartContext";
 import NotFound from "@/pages/NotFound";
+import Home from "@/pages/Home";
+import ProductDetail from "@/pages/ProductDetail";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
+    <div className="app-shell">
+      <StorefrontNav />
+      <Switch>
+        <Route path="/" component={Home} />
+        <Route path="/product/:slug" component={ProductDetail} />
+        <Route path="/404" component={NotFound} />
+        <Route component={NotFound} />
+      </Switch>
+      <footer className="site-footer"><div className="container"><span>© 2026 PixelShelf</span><span>Made for ideas in motion.</span></div></footer>
+      <CartDrawer />
+    </div>
   );
 }
-
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
-          <Toaster />
-          <Router />
+          <LocalCartProvider>
+            <Toaster />
+            <Router />
+          </LocalCartProvider>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>
