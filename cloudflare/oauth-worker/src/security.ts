@@ -119,6 +119,10 @@ export function clearCookie(name: string): string {
   return `${name}=; Path=/; Max-Age=0; HttpOnly; Secure; SameSite=Lax`;
 }
 
+export function accountReturnUrl(publicOrigin: string): string {
+  return `${publicOrigin}/#/account`;
+}
+
 export function securityHeaders(): Headers {
   return new Headers({
     "Cache-Control": "no-store",

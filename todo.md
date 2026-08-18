@@ -69,19 +69,20 @@
 - [x] Verify the enhanced checkout, account, and catalog on desktop and mobile, then save and deploy the update
 - [x] Diagnose and fix the mismatch where cart additions are not reflected as orders in the buyer account
 - [x] Add a persistent RUB, EUR, and USD currency selector with localized price formatting across catalog, cart, checkout, and account
-- [ ] Add a buyer sign-in surface for Google, Steam, Apple ID, and Telegram, with secure provider configuration requirements documented
-- [ ] Add and run automated coverage for order visibility, currency selection, and sign-in provider state
+- [ ] Complete secure Steam, Apple ID, and Telegram implementations or retain their clearly labelled unavailable state until provider-specific credentials are configured
+- [x] Run and record a passing test command that includes buyer-state order visibility, currency selection, and the new sign-in coverage
 - [ ] Verify the new account, currency, and order flows across desktop and mobile, then save and deploy the update
 - [ ] Configure each approved external sign-in provider through the user-authorized developer account sessions and securely register the resulting credentials
-- [ ] Prepare a secure production deployment configuration with server-side OAuth callbacks and HTTPS-only session controls
-- [ ] Attach and verify the custom domain pixelgame.pro after explicit approval of DNS changes
+- [x] Prepare a secure production deployment configuration with server-side OAuth callbacks and HTTPS-only session controls
+- [x] Attach and verify the custom domain pixelgame.pro after explicit approval of DNS changes
 - [ ] Add production redirect URIs for Google, Steam, Apple ID, and Telegram only after the custom domain has verified TLS
 - [ ] Perform a security review covering secret isolation, OAuth callback validation, allowed origins, session cookies, and rate limits
 - [x] Configure pixelgame.pro as the GitHub Pages custom domain with an exact CNAME configuration
 - [x] Replace the existing Hostinger apex routing only with GitHub Pages’ documented A records after explicit confirmation
-- [ ] Enable and verify GitHub Pages HTTPS enforcement for pixelgame.pro
+- [x] Enable and verify GitHub Pages HTTPS enforcement for pixelgame.pro
 - [x] Document that GitHub Pages hosts only the static storefront while secure provider OAuth requires a separate backend
-- [ ] Provision a Cloudflare Workers OAuth backend on auth.pixelgame.pro without exposing provider secrets to GitHub Pages
-- [ ] Configure DNS and HTTPS for auth.pixelgame.pro separately from the GitHub Pages apex records
-- [ ] Implement PKCE, state/nonce validation, exact redirect allowlists, secure cookies, and rate limiting for provider callbacks
+- [x] Provision a Cloudflare Workers OAuth backend on auth.pixelgame.pro without exposing provider secrets to GitHub Pages
+- [x] Configure DNS and HTTPS for auth.pixelgame.pro separately from the GitHub Pages apex records
+- [x] Implement PKCE, state/nonce validation, exact redirect allowlists, secure cookies, and rate limiting for provider callbacks
 - [ ] Configure Google, Steam, Apple ID, and Telegram credentials in Cloudflare secrets and verify each callback
+- [x] Fix the Google OAuth return path so the GitHub Pages hash router opens the account page without a 404

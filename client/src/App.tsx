@@ -3,6 +3,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import CartDrawer from "@/components/CartDrawer";
 import StorefrontNav from "@/components/StorefrontNav";
 import { LocalCartProvider } from "@/contexts/LocalCartContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { FavouritesProvider } from "@/contexts/FavouritesContext";
 import { OrdersProvider } from "@/contexts/OrdersContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
@@ -45,11 +46,13 @@ function AppContent() {
           <LanguageProvider>
             <CurrencyProvider>
               <FavouritesProvider>
-                <OrdersProvider>
+              <OrdersProvider>
+                <AuthProvider>
                   <LocalCartProvider>
                     <Toaster />
                     <StorefrontRoutes />
                   </LocalCartProvider>
+                </AuthProvider>
                 </OrdersProvider>
               </FavouritesProvider>
             </CurrencyProvider>

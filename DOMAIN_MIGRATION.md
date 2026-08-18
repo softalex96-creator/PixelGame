@@ -46,6 +46,10 @@ The secure OAuth backend will run as a separate Cloudflare Worker at `auth.pixel
 
 Cloudflare imported the expected five storefront records: four apex A records and one `www` CNAME. Before activation, every imported GitHub Pages record must be switched to **DNS only** (gray cloud), not proxied. GitHub Pages needs its documented A/CNAME responses visible for custom-domain and certificate validation; proxying the records would hide that routing and risk breaking issuance. A future `auth` Worker hostname may be proxied only after it is attached to the Worker as a Cloudflare Custom Domain.
 
+## TLS status after Cloudflare delegation
+
+Cloudflare nameserver delegation is active and authoritative DNS resolves the expected GitHub Pages A and `www` CNAME records. The GitHub Pages settings page currently shows **DNS Check in Progress** and reports that Enforce HTTPS remains unavailable because its certificate for `pixelgame.pro` has not been issued. The currently served `*.github.io` certificate does not include `pixelgame.pro`, so browsers correctly block the HTTPS page with `NET::ERR_CERT_COMMON_NAME_INVALID`. Do not bypass this warning or enable a production login surface until GitHub finishes its certificate issuance and the Pages setting exposes Enforce HTTPS.
+
 ### References
 
 [1] [Cloudflare Workers — Secrets](https://developers.cloudflare.com/workers/configuration/secrets/)

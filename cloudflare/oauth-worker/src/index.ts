@@ -1,5 +1,6 @@
 import { createRemoteJWKSet, jwtVerify } from "jose";
 import {
+  accountReturnUrl,
   clearCookie,
   codeChallenge,
   corsHeaders,
@@ -85,7 +86,7 @@ async function finishGoogleLogin(request: Request, env: Env): Promise<Response> 
   const code = url.searchParams.get("code");
 
   if (!state || state.state !== suppliedState || !code || url.searchParams.has("error")) {
-    return redirect(`${env.PUBLIC_ORIGIN}/#/account?signin=failed`, [clearCookie(OAUTH_STATE_COOKIE)]);
+    return redirect(accountReturnUrl(env.PUBLIC_ORIGIN), [clearCookie(OAUTH_STATE_COOKIE)]);
   }
 
   const callbackUrl = `${env.AUTH_ORIGIN}/v1/callback/google`;
@@ -104,7 +105,7 @@ async function finishGoogleLogin(request: Request, env: Env): Promise<Response> 
   });
   const tokenPayload = (await tokenResponse.json()) as { id_token?: string };
   if (!tokenResponse.ok || !tokenPayload.id_token) {
-    return redirect(`${env.PUBLIC_ORIGIN}/#/account?signin=failed`, [clearCookie(OAUTH_STATE_COOKIE)]);
+    return redirect(accountReturnUrl(env.PUBLIC_ORIGIN), [clearCookie(OAUTH_STATE_COOKIE)]);
   }
 
   try {
@@ -119,12 +120,12 @@ async function finishGoogleLogin(request: Request, env: Env): Promise<Response> 
       { email: payload.email, expiresAt: Date.now() + 8 * 60 * 60 * 1000, provider: "google", sub: payload.sub },
       env.SESSION_HMAC_KEY,
     );
-    return redirect(`${env.PUBLIC_ORIGIN}/#/account?signin=google`, [
+    return redirect(accountReturnUrl(env.PUBLIC_ORIGIN), [
       clearCookie(OAUTH_STATE_COOKIE),
       serializeCookie(SESSION_COOKIE, sessionCookie, 8 * 60 * 60),
     ]);
   } catch {
-    return redirect(`${env.PUBLIC_ORIGIN}/#/account?signin=failed`, [clearCookie(OAUTH_STATE_COOKIE)]);
+    return redirect(accountReturnUrl(env.PUBLIC_ORIGIN), [clearCookie(OAUTH_STATE_COOKIE)]);
   }
 }
 

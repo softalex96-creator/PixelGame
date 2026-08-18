@@ -2,9 +2,10 @@
   "name": "pixelgame-oauth",
   "main": "src/index.ts",
   "compatibility_date": "2026-08-18",
-  "workers_dev": true,
+  "workers_dev": false,
   "observability": {
-    "enabled": true
+    "enabled": true,
+    "head_sampling_rate": 0.01
   },
   "vars": {
     "PUBLIC_ORIGIN": "https://pixelgame.pro",
@@ -25,6 +26,12 @@
         "limit": 6,
         "period": 10
       }
+    }
+  ],
+  "routes": [
+    {
+      "pattern": "auth.pixelgame.pro",
+      "custom_domain": true
     }
   ]
 }

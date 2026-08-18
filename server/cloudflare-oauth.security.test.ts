@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  accountReturnUrl,
   codeChallenge,
   createOAuthState,
   readOAuthState,
@@ -29,5 +30,9 @@ describe("Cloudflare OAuth security helpers", () => {
     expect(headers.get("Content-Security-Policy")).toContain("default-src 'none'");
     expect(headers.get("X-Frame-Options")).toBe("DENY");
     expect(headers.get("Strict-Transport-Security")).toContain("includeSubDomains");
+  });
+
+  it("returns to the exact hash-account route without OAuth query text", () => {
+    expect(accountReturnUrl("https://pixelgame.pro")).toBe("https://pixelgame.pro/#/account");
   });
 });
