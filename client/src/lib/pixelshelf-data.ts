@@ -40,9 +40,9 @@ export type SearchSuggestion = {
   query: string;
 };
 
-const novaImage = "/manus-storage/pixelshelf-nova-credits_ae3936e0.png";
-const arcaneImage = "/manus-storage/pixelshelf-arcane-coins_a7bfbc0d.png";
-const arcadeImage = "/manus-storage/pixelshelf-arcade-tokens_c1c32d6d.png";
+const novaImage = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/fKMGbHOAuzwZgjAV.png";
+const arcaneImage = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/rCBwqjnXjcuQFyAi.png";
+const arcadeImage = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/HQFRRsQMYaSJJhAB.png";
 
 export const products: MarketplaceProduct[] = [
   {

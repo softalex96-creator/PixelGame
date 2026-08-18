@@ -3,7 +3,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useFavourites } from "@/contexts/FavouritesContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import SearchAutocomplete from "@/components/SearchAutocomplete";
-import { Heart, Moon, ShoppingBag, Sparkles, Sun } from "lucide-react";
+import { Heart, Moon, ShoppingBag, Sparkles, Sun, UserRound } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 
@@ -56,6 +56,10 @@ export default function StorefrontNav() {
         <Link href="/?saved=true#catalog" className="favourites-trigger" aria-label={`${t.savedBundles}: ${favouriteCount}`}>
           <Heart size={18} fill={favouriteCount > 0 ? "currentColor" : "none"} />
           {favouriteCount > 0 && <span className="favourites-count">{favouriteCount}</span>}
+        </Link>
+
+        <Link href="/account" className="account-trigger" aria-label={t.account}>
+          <UserRound size={18} /><span>{t.account}</span>
         </Link>
 
         <button className="cart-trigger" onClick={openCart} aria-label={`${t.cart}: ${itemCount}`}>

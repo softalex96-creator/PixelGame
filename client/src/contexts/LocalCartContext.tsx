@@ -1,7 +1,7 @@
 import { products, type MarketplaceProduct } from "@/lib/pixelshelf-data";
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
-type CartLine = {
+export type CartLine = {
   product: MarketplaceProduct;
   quantity: number;
 };
@@ -32,6 +32,7 @@ type LocalCartContextValue = {
   removeItem: (id: string) => void;
   openCart: () => void;
   closeCart: () => void;
+  clearCart: () => void;
   completeCheckout: () => void;
   resetCheckout: () => void;
 };
@@ -84,6 +85,7 @@ export function LocalCartProvider({ children }: { children: ReactNode }) {
       removeItem: (id) => setLines((current) => current.filter((line) => line.product.id !== id)),
       openCart: () => setIsCartOpen(true),
       closeCart: () => setIsCartOpen(false),
+      clearCart: () => setLines([]),
       completeCheckout: () => {
         setLines([]);
         setCheckoutComplete(true);

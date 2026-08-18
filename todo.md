@@ -51,3 +51,10 @@
 - [x] Prepare the verified PixelGame project for export to the confirmed GitHub repository
 - [x] Push the current PixelGame project to softalex96-creator/PixelGame and verify the export
 - [x] Confirm the newly configured GitHub integration can authenticate the PixelGame export
+- [ ] Add a simulated checkout flow with a clear successful-payment confirmation for game-currency bundles
+- [ ] Persist local simulated orders and expose them in a buyer account order history
+- [ ] Add a buyer account page that presents saved favourite bundles and order history
+- [ ] Add account and checkout navigation with coherent empty and success states
+- [ ] Configure Vercel for automatic deployment from the GitHub main branch
+- [ ] Add and run tests for simulated order creation, checkout state, and account history
+- [ ] Verify responsive checkout and account experiences, then save and push the completed project

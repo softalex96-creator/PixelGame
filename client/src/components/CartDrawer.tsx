@@ -1,21 +1,20 @@
 import { useLocalCart } from "@/contexts/LocalCartContext";
 import { getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
 import { formatPrice } from "@/lib/pixelshelf-data";
-import { CheckCircle2, Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
+import { useLocation } from "wouter";
 
 export default function CartDrawer() {
   const {
     lines,
     subtotal,
     isCartOpen,
-    checkoutComplete,
     closeCart,
     updateQuantity,
     removeItem,
-    completeCheckout,
-    resetCheckout,
   } = useLocalCart();
   const { locale, t } = useLanguage();
+  const [, navigate] = useLocation();
 
   return (
     <>
@@ -34,14 +33,7 @@ export default function CartDrawer() {
           <button className="icon-button" onClick={closeCart} aria-label={t.closeCart}><X size={20} /></button>
         </div>
 
-        {checkoutComplete ? (
-          <div className="cart-complete">
-            <span className="complete-icon"><CheckCircle2 size={24} /></span>
-            <h3>{t.topUpRequestComplete}</h3>
-            <p>{t.topUpCompleteCopy}</p>
-            <button className="button button-dark" onClick={resetCheckout}>{t.keepBrowsing}</button>
-          </div>
-        ) : lines.length === 0 ? (
+        {lines.length === 0 ? (
           <div className="cart-empty">
             <span className="empty-icon"><ShoppingBag size={25} /></span>
             <h3>{t.queueClear}</h3>
@@ -74,7 +66,7 @@ export default function CartDrawer() {
             <div className="cart-summary">
               <div><span>{t.subtotal}</span><strong>{formatPrice(subtotal)}</strong></div>
               <p>{t.cartNote}</p>
-              <button className="button button-primary checkout-button" onClick={completeCheckout}>{t.continueTopUp}</button>
+              <button className="button button-primary checkout-button" onClick={() => { closeCart(); navigate("/checkout"); }}>{t.continueTopUp}</button>
             </div>
           </>
         )}
