@@ -77,3 +77,7 @@
 - [ ] Attach and verify the custom domain pixelgame.pro after explicit approval of DNS changes
 - [ ] Add production redirect URIs for Google, Steam, Apple ID, and Telegram only after the custom domain has verified TLS
 - [ ] Perform a security review covering secret isolation, OAuth callback validation, allowed origins, session cookies, and rate limits
+- [x] Configure pixelgame.pro as the GitHub Pages custom domain with an exact CNAME configuration
+- [x] Replace the existing Hostinger apex routing only with GitHub Pages’ documented A records after explicit confirmation
+- [ ] Enable and verify GitHub Pages HTTPS enforcement for pixelgame.pro
+- [ ] Document that GitHub Pages hosts only the static storefront while secure provider OAuth requires a separate backend
