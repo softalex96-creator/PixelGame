@@ -49,9 +49,9 @@ export type SearchSuggestion = {
   query: string;
 };
 
-const novaImage = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/fKMGbHOAuzwZgjAV.png";
-const arcaneImage = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/rCBwqjnXjcuQFyAi.png";
-const arcadeImage = "https://files.manuscdn.com/user_upload_by_module/session_file/310519663899529266/HQFRRsQMYaSJJhAB.png";
+const novaImage = "/manus-storage/pixelgame-world-novaverse-v2_89f75f77.png";
+const arcaneImage = "/manus-storage/pixelgame-world-arcane-v2_d0db31c9.png";
+const arcadeImage = "/manus-storage/pixelgame-world-neon-v2_f2a96e53.png";
 
 export const products: MarketplaceProduct[] = [
   {
@@ -168,13 +168,69 @@ export const products: MarketplaceProduct[] = [
     accent: "violet",
     includes: ["5,000 Pulse Tokens", "1,000 bonus tokens", "Digital delivery preview"],
   },
+  {
+    id: "product-nova-orbit",
+    slug: "novaverse-orbit-reserve",
+    title: "Orbit Reserve",
+    category: "Templates",
+    game: "NovaVerse",
+    currency: "Nova Credits",
+    bundleLabel: "8,500 + 1,700 bonus",
+    delivery: "Digital credit delivery",
+    price: 39,
+    description: "A long-range reserve for an extended fictional campaign.",
+    longDescription:
+      "Orbit Reserve is the largest fictional NovaVerse credit option in the local catalogue. It makes the total, bonus, and simulated delivery context explicit before the shopper starts a local checkout.",
+    creator: "Nebula Forge",
+    creatorInitials: "NF",
+    image: novaImage,
+    accent: "indigo",
+    includes: ["8,500 Nova Credits", "1,700 bonus credits", "Digital delivery preview"],
+  },
+  {
+    id: "product-aether-moonlit",
+    slug: "arcane-realms-moonlit-cache",
+    title: "Moonlit Cache",
+    category: "Design Resources",
+    game: "Arcane Realms",
+    currency: "Aether Coins",
+    bundleLabel: "6,200 + 1,240 bonus",
+    delivery: "Digital coin delivery",
+    price: 35,
+    description: "A premium coin reserve for the next fictional chapter.",
+    longDescription:
+      "Moonlit Cache is a premium fictional Aether Coins offer built for clear comparison. The local preview keeps its bundle amount, bonus, price, and simulated checkout expectation in one transparent path.",
+    creator: "Arcane Studio",
+    creatorInitials: "AS",
+    image: arcaneImage,
+    accent: "lilac",
+    includes: ["6,200 Aether Coins", "1,240 bonus coins", "Digital delivery preview"],
+  },
+  {
+    id: "product-pulse-overdrive",
+    slug: "neon-circuit-overdrive-case",
+    title: "Overdrive Case",
+    category: "Business Tools",
+    game: "Neon Circuit",
+    currency: "Pulse Tokens",
+    bundleLabel: "9,000 + 2,250 bonus",
+    delivery: "Digital token delivery",
+    price: 46,
+    description: "A maximum charge case for a fictional arcade season.",
+    longDescription:
+      "Overdrive Case anchors the Neon Circuit range with an original, fictional premium bundle. Its content is clearly scoped to a local cart and simulated payment experience until a verified catalogue is connected.",
+    creator: "Neon Circuit Co.",
+    creatorInitials: "NC",
+    image: arcadeImage,
+    accent: "cyan",
+    includes: ["9,000 Pulse Tokens", "2,250 bonus tokens", "Digital delivery preview"],
+  },
 ];
 
 export const creators: Creator[] = [
-  { name: "NovaVerse", initials: "NV", productCount: 12, role: "Sci-fi frontier", accent: "cyan" },
-  { name: "Arcane Realms", initials: "AR", productCount: 9, role: "Fantasy adventure", accent: "violet" },
-  { name: "Neon Circuit", initials: "NC", productCount: 11, role: "Competitive arcade", accent: "indigo" },
-  { name: "Skyfall Legends", initials: "SL", productCount: 7, role: "Open-world RPG", accent: "lilac" },
+  { name: "NovaVerse", initials: "NV", productCount: 3, role: "Sci-fi frontier", accent: "cyan" },
+  { name: "Arcane Realms", initials: "AR", productCount: 3, role: "Fantasy adventure", accent: "violet" },
+  { name: "Neon Circuit", initials: "NC", productCount: 3, role: "Competitive arcade", accent: "indigo" },
 ];
 
 export function getProductBySlug(slug: string) {

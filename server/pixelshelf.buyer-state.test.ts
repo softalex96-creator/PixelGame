@@ -70,8 +70,8 @@ describe("PixelGame price controls", () => {
   it("filters packs by price tier and sorts the filtered result without mutating the catalogue", () => {
     expect(filterAndSortProducts(products, "All", "", "All games", "budget", "price-asc").map((product) => product.price)).toEqual([6, 7, 9]);
     expect(filterAndSortProducts(products, "All", "", "All games", "standard", "price-desc").map((product) => product.price)).toEqual([20]);
-    expect(filterAndSortProducts(products, "All", "", "All games", "premium", "featured").map((product) => product.price)).toEqual([22, 28]);
-    expect(products.map((product) => product.price)).toEqual([7, 20, 6, 22, 9, 28]);
+    expect(filterAndSortProducts(products, "All", "", "All games", "premium", "featured").map((product) => product.price)).toEqual([22, 28, 39, 35, 46]);
+    expect(products.map((product) => product.price)).toEqual([7, 20, 6, 22, 9, 28, 39, 35, 46]);
   });
 
   it("formats the USD base catalogue in each supported display currency", () => {

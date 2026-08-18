@@ -115,6 +115,7 @@
     "shopify:smoke:populated": "SHOPIFY_CATALOG_STATE=populated vitest run server/shopify.smoke.test.ts",
     "start": "NODE_ENV=production node dist/index.js",
     "test": "vitest run",
+    "verify:loadout-assets": "node scripts/verify-loadout-world-assets.mjs",
     "verify:production": "node scripts/verify-production-flow.mjs"
   },
   "type": "module",

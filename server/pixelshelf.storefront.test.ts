@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { addProductToLocalCart, setLocalCartQuantity } from "../client/src/contexts/LocalCartContext";
 import { filterProducts, products } from "../client/src/lib/pixelshelf-data";
 
-describe("PixelShelf storefront data", () => {
+describe("PixelGame storefront data", () => {
   it("filters the catalog by each required category label", () => {
     expect(filterProducts(products, "Templates", "").every((product) => product.category === "Templates")).toBe(true);
     expect(filterProducts(products, "Design Resources", "").every((product) => product.category === "Design Resources")).toBe(true);
@@ -17,7 +17,17 @@ describe("PixelShelf storefront data", () => {
 
   it("matches currency packs by title and game name", () => {
     expect(filterProducts(products, "All", "champion")).toHaveLength(1);
-    expect(filterProducts(products, "All", "novaverse")).toHaveLength(2);
+    expect(filterProducts(products, "All", "novaverse")).toHaveLength(3);
+  });
+
+  it("ships three original local-preview bundles for each featured world", () => {
+    expect(products).toHaveLength(9);
+    for (const world of ["NovaVerse", "Arcane Realms", "Neon Circuit"] as const) {
+      const worldProducts = filterProducts(products, "All", "", world);
+      expect(worldProducts).toHaveLength(3);
+      expect(worldProducts.every((product) => product.image.startsWith("/manus-storage/"))).toBe(true);
+      expect(worldProducts.every((product) => product.longDescription.includes("fictional") || product.longDescription.includes("original"))).toBe(true);
+    }
   });
 });
 
