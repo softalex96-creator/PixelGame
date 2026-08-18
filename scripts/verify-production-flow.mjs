@@ -21,8 +21,18 @@ async function verifyViewport(browser, { name, viewport }) {
 
   await page.goto(route(productPath), { waitUntil: "networkidle" });
   await page.locator(".product-detail-page button.instant-button").click();
-  await page.getByRole("button", { name: "Close cart" }).click();
-  await page.goto(route("/checkout"), { waitUntil: "networkidle" });
+  const quantityIncrease = page.getByRole("button", { name: "Increase quantity" });
+  assert.equal(await page.getByRole("button", { name: "Decrease quantity" }).isDisabled(), true, `${name}: a one-item line must not decrement below one`);
+  await quantityIncrease.click();
+  assert.equal(await page.locator(".quantity-control span").first().textContent(), "2", `${name}: quantity control must update the local cart`);
+  await page.getByRole("button", { name: "Continue to checkout" }).click();
+  const confirmationDialog = page.getByRole("dialog");
+  await confirmationDialog.waitFor();
+  assert.equal(await confirmationDialog.getByText("SIMULATED ONLY", { exact: true }).count(), 1, `${name}: confirmation must explicitly identify the local simulation`);
+  assert.match(await confirmationDialog.textContent() ?? "", /No payment, account delivery or order is sent outside this browser/, `${name}: dialog must explain that checkout remains local`);
+  await page.screenshot({ path: `/home/ubuntu/webdev-static-assets/pixelgame-simulated-checkout-${name}.png`, fullPage: false });
+  await confirmationDialog.getByRole("button", { name: "Open simulated checkout" }).click();
+  await page.getByRole("heading", { name: "Complete your local order" }).waitFor();
   await page.getByLabel("Email for the delivery preview").fill("qa@example.test");
   await page.getByLabel("Player tag").fill("PixelGameQA#001");
   await page.locator("button.payment-button").click();
