@@ -80,4 +80,4 @@
 - [x] Configure pixelgame.pro as the GitHub Pages custom domain with an exact CNAME configuration
 - [x] Replace the existing Hostinger apex routing only with GitHub Pages’ documented A records after explicit confirmation
 - [ ] Enable and verify GitHub Pages HTTPS enforcement for pixelgame.pro
-- [ ] Document that GitHub Pages hosts only the static storefront while secure provider OAuth requires a separate backend
+- [x] Document that GitHub Pages hosts only the static storefront while secure provider OAuth requires a separate backend
