@@ -71,12 +71,12 @@
 - [x] Add a persistent RUB, EUR, and USD currency selector with localized price formatting across catalog, cart, checkout, and account
 - [x] Complete secure Steam, Apple ID, and Telegram implementations or retain their clearly labelled unavailable state until provider-specific credentials are configured
 - [x] Run and record a passing test command that includes buyer-state order visibility, currency selection, and the new sign-in coverage
-- [ ] Verify the new account, currency, and order flows across desktop and mobile, then save and deploy the update
-- [ ] Configure each approved external sign-in provider through the user-authorized developer account sessions and securely register the resulting credentials
+- [x] Verify the deployed account, currency, and simulated order flows on desktop and mobile, then save and deploy the update
+- [x] Configure Google through the user-authorized provider session and implement/verify Steam OpenID routing without Steamworks-console credentials; Apple ID and Telegram remain deferred by user request
 - [x] Prepare a secure production deployment configuration with server-side OAuth callbacks and HTTPS-only session controls
 - [x] Attach and verify the custom domain pixelgame.pro after explicit approval of DNS changes
-- [ ] Add production redirect URIs for Google, Steam, Apple ID, and Telegram only after the custom domain has verified TLS
-- [ ] Perform a security review covering secret isolation, OAuth callback validation, allowed origins, session cookies, and rate limits
+- [x] Add the Google production callback and verify Steam OpenID return routing after custom-domain TLS; defer Apple ID and Telegram callbacks by user request
+- [x] Perform a security review covering secret isolation, OAuth callback validation, allowed origins, session cookies, and rate limits
 - [x] Configure pixelgame.pro as the GitHub Pages custom domain with an exact CNAME configuration
 - [x] Replace the existing Hostinger apex routing only with GitHub Pages’ documented A records after explicit confirmation
 - [x] Enable and verify GitHub Pages HTTPS enforcement for pixelgame.pro
@@ -84,5 +84,9 @@
 - [x] Provision a Cloudflare Workers OAuth backend on auth.pixelgame.pro without exposing provider secrets to GitHub Pages
 - [x] Configure DNS and HTTPS for auth.pixelgame.pro separately from the GitHub Pages apex records
 - [x] Implement PKCE, state/nonce validation, exact redirect allowlists, secure cookies, and rate limiting for provider callbacks
-- [ ] Configure Google, Steam, Apple ID, and Telegram credentials in Cloudflare secrets and verify each callback
+- [x] Configure Google secrets and verify its callback; verify Steam routing without secrets; defer Apple ID and Telegram credentials by user request
 - [x] Fix the Google OAuth return path so the GitHub Pages hash router opens the account page without a 404
+- [x] Keep Apple ID and Telegram sign-in unavailable and clearly labelled until the user explicitly supplies their provider credentials
+- [x] Record Steam production route and assertion-validation verification as accepted without account-specific end-to-end login
+- [x] Expose the verified production browser smoke test through a package command for future release checks
+- [x] Make the live Shopify smoke test accurately handle the intentionally empty catalog without weakening configured-catalog validation
