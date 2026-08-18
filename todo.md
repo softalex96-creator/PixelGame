@@ -43,4 +43,8 @@
 - [x] Verify cart drawer, favourites controls, autocomplete panel, and product detail in both themes across desktop and mobile
 - [x] Fix the light-theme header cart label so it remains visible against the light navigation background
 - [x] Verify cart-label contrast in both themes
-- [ ] Save the corrected storefront checkpoint
+- [x] Save the corrected storefront checkpoint
+- [x] Rename visible storefront branding from PixelShelf to PixelGame
+- [x] Update the managed application title to PixelGame
+- [x] Verify the renamed desktop and mobile storefront identity
+- [ ] Save a review checkpoint for the renamed PixelGame storefront

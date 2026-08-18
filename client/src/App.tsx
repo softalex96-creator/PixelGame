@@ -24,7 +24,7 @@ function Router() {
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
-      <footer className="site-footer"><div className="container"><span>© 2026 PixelShelf</span><span>{t.footer}</span></div></footer>
+      <footer className="site-footer"><div className="container"><span>© 2026 PixelGame</span><span>{t.footer}</span></div></footer>
       <CartDrawer />
     </div>
   );

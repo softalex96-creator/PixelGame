@@ -30,7 +30,7 @@ const copy = {
     searchGames: "Search games, currencies, or bundles",
     search: "Search",
     browseCurrencyPacks: "Browse currency packs",
-    heroArtLabel: "PixelShelf / Game Vault",
+    heroArtLabel: "PixelGame / Game Vault",
     heroArtTitle: "More play, ready when you are.",
     freshDrops: "Fresh drops",
     catalogHeading: "Choose your world. Stack your currency.",
@@ -71,7 +71,7 @@ const copy = {
     included: "What’s included",
     detailNote: "A local top-up flow is active for this preview. Connect approved virtual-item checkout and fulfillment only after your real catalog is ready.",
     missingTitle: "That pack has moved out of the vault.",
-    browseVault: "Browse PixelShelf",
+    browseVault: "Browse PixelGame",
   },
   ru: {
     games: "Игры",
@@ -99,7 +99,7 @@ const copy = {
     searchGames: "Поиск игр, валюты или наборов",
     search: "Найти",
     browseCurrencyPacks: "Смотреть валютные наборы",
-    heroArtLabel: "PixelShelf / Игровое хранилище",
+    heroArtLabel: "PixelGame / Игровое хранилище",
     heroArtTitle: "Больше игры — когда вы готовы.",
     freshDrops: "Новые поступления",
     catalogHeading: "Выберите мир. Пополните валюту.",
@@ -140,7 +140,7 @@ const copy = {
     included: "Что входит в набор",
     detailNote: "В этом предварительном просмотре включён локальный поток пополнения. Подключите одобренную оплату и выдачу виртуальных товаров после подготовки реального каталога.",
     missingTitle: "Этот набор больше не доступен в хранилище.",
-    browseVault: "Открыть PixelShelf",
+    browseVault: "Открыть PixelGame",
   },
 } as const;
 

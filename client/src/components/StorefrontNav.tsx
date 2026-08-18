@@ -22,9 +22,9 @@ export default function StorefrontNav() {
   return (
     <header className="site-header">
       <div className="container nav-inner">
-        <Link href="/" className="brand" aria-label="PixelShelf home">
+        <Link href="/" className="brand" aria-label="PixelGame home">
           <span className="brand-mark"><Sparkles size={16} strokeWidth={2.6} /></span>
-          <span>PixelShelf</span>
+          <span>PixelGame</span>
         </Link>
 
         <nav className="desktop-nav" aria-label="Marketplace navigation">
