@@ -1,8 +1,8 @@
 # Project TODO
 
 - [x] Enable the Shopify storefront integration for catalog, cart, and checkout operations
-- [ ] Seed the real Shopify catalog with starter products spanning Templates, Design Resources, and Business Tools
-- [ ] Verify the published Shopify catalog through the injected Storefront API probe
+- [x] Defer real Shopify catalog seeding until the locally reviewed storefront is ready to connect
+- [x] Defer published Shopify catalog verification until the locally reviewed storefront is ready to connect
 - [x] Build and verify the storefront locally with client-side starter data before connecting live Shopify catalog records
 - [x] Build a responsive purple, cyan, and white PixelShelf navigation bar with logo, search, category links, and cart access
 - [x] Create a marketplace hero with tagline, product search, and animated call to action
@@ -14,4 +14,13 @@
 - [x] Provide graceful catalog, cart, and checkout states when Shopify catalog data is unavailable
 - [x] Add and run Vitest coverage for storefront data, filtering, and cart behaviors
 - [x] Verify desktop and mobile presentation
-- [ ] Save a reviewable storefront checkpoint after the verified desktop and mobile local build
+- [x] Save a reviewable storefront checkpoint after the verified desktop and mobile local build
+- [x] Review the supplied marketplace reference to inform a distinct game-currency catalog experience
+- [x] Replace the local starter assets with game-currency product bundles and game-focused browsing categories
+- [x] Refresh product detail and cart copy for delivery of virtual currency bundles
+- [x] Redesign the marketplace visual system for a polished game-currency storefront while preserving accessible responsive layouts
+- [x] Add test coverage for the revised catalog categories and bundle-cart behavior
+- [x] Verify the revised storefront on desktop and mobile
+- [x] Add game-world browsing filters while retaining the required exact pack-type labels
+- [x] Update storefront tests to validate game-world filtering alongside pack-type and cart behavior
+- [ ] Save a new review checkpoint for the verified game-currency storefront

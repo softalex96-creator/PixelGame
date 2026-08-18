@@ -26,7 +26,7 @@ export default function CartDrawer() {
       <aside className={`cart-drawer ${isCartOpen ? "is-open" : ""}`} aria-label="Shopping cart" aria-hidden={!isCartOpen}>
         <div className="cart-drawer-header">
           <div>
-            <p className="eyebrow">Your shelf</p>
+            <p className="eyebrow">Your top-up</p>
             <h2>Cart</h2>
           </div>
           <button className="icon-button" onClick={closeCart} aria-label="Close cart"><X size={20} /></button>
@@ -35,16 +35,16 @@ export default function CartDrawer() {
         {checkoutComplete ? (
           <div className="cart-complete">
             <span className="complete-icon"><CheckCircle2 size={24} /></span>
-            <h3>Local checkout complete</h3>
-            <p>This demo cleared your cart. Connect this action to the Shopify checkout when your live catalog is ready.</p>
+            <h3>Top-up request complete</h3>
+            <p>This local preview cleared your cart. Connect the action to an approved virtual-currency checkout when your live catalog is ready.</p>
             <button className="button button-dark" onClick={resetCheckout}>Keep browsing</button>
           </div>
         ) : lines.length === 0 ? (
           <div className="cart-empty">
             <span className="empty-icon"><ShoppingBag size={25} /></span>
-            <h3>Your shelf is clear</h3>
-            <p>Add a digital asset and it will stay here while you browse.</p>
-            <button className="text-button" onClick={closeCart}>Explore products</button>
+            <h3>Your queue is clear</h3>
+            <p>Add a currency pack and it will stay here while you browse.</p>
+            <button className="text-button" onClick={closeCart}>Explore packs</button>
           </div>
         ) : (
           <>
@@ -70,8 +70,8 @@ export default function CartDrawer() {
             </div>
             <div className="cart-summary">
               <div><span>Subtotal</span><strong>{formatPrice(subtotal)}</strong></div>
-              <p>Local demo checkout. Taxes and delivery are calculated after Shopify is connected.</p>
-              <button className="button button-primary checkout-button" onClick={completeCheckout}>Continue to checkout</button>
+              <p>Local preview checkout. Connect only approved virtual-item checkout and fulfillment after your catalog is ready.</p>
+              <button className="button button-primary checkout-button" onClick={completeCheckout}>Continue to top-up</button>
             </div>
           </>
         )}

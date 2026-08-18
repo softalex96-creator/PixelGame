@@ -1,5 +1,4 @@
 import { useLocalCart } from "@/contexts/LocalCartContext";
-import { categories } from "@/lib/pixelshelf-data";
 import { Search, ShoppingBag, Sparkles } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { Link, useLocation } from "wouter";
@@ -22,12 +21,10 @@ export default function StorefrontNav() {
           <span>PixelShelf</span>
         </Link>
 
-        <nav className="desktop-nav" aria-label="Marketplace categories">
-          {categories.map((category) => (
-            <Link key={category} href={`/?category=${encodeURIComponent(category)}#catalog`}>
-              {category}
-            </Link>
-          ))}
+        <nav className="desktop-nav" aria-label="Marketplace navigation">
+          <Link href="/#catalog">Games</Link>
+          <Link href="/#catalog">Currency packs</Link>
+          <Link href="/#how-it-works">How it works</Link>
         </nav>
 
         <form className="nav-search" onSubmit={handleSearch}>
@@ -36,7 +33,7 @@ export default function StorefrontNav() {
             aria-label="Search assets"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search the shelf"
+            placeholder="Search currency packs"
           />
         </form>
 

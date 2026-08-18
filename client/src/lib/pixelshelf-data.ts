@@ -1,12 +1,18 @@
 export const categories = ["Templates", "Design Resources", "Business Tools"] as const;
+export const gameFilters = ["All games", "NovaVerse", "Arcane Realms", "Neon Circuit"] as const;
 
 export type Category = (typeof categories)[number];
+export type GameFilter = (typeof gameFilters)[number];
 
 export type MarketplaceProduct = {
   id: string;
   slug: string;
   title: string;
   category: Category;
+  game: string;
+  currency: string;
+  bundleLabel: string;
+  delivery: string;
   price: number;
   description: string;
   longDescription: string;
@@ -25,120 +31,150 @@ export type Creator = {
   accent: "violet" | "cyan" | "indigo" | "lilac";
 };
 
-const templateImage = "/manus-storage/pixelshelf-template-vault_dafcf821.png";
-const designImage = "/manus-storage/pixelshelf-design-assets_29cbf395.png";
-const businessImage = "/manus-storage/pixelshelf-business-toolkit_3104fce3.png";
+const novaImage = "/manus-storage/pixelshelf-nova-credits_ae3936e0.png";
+const arcaneImage = "/manus-storage/pixelshelf-arcane-coins_a7bfbc0d.png";
+const arcadeImage = "/manus-storage/pixelshelf-arcade-tokens_c1c32d6d.png";
 
 export const products: MarketplaceProduct[] = [
   {
-    id: "product-launchpad",
-    slug: "launchpad-landing-page-kit",
-    title: "Launchpad Landing Page Kit",
+    id: "product-nova-explorer",
+    slug: "novaverse-explorer-cache",
+    title: "Explorer Cache",
     category: "Templates",
-    price: 24,
-    description: "A bright, modular page system for your next launch.",
+    game: "NovaVerse",
+    currency: "Nova Credits",
+    bundleLabel: "1,200 + 120 bonus",
+    delivery: "Digital credit delivery",
+    price: 7,
+    description: "A focused credit top-up for your next expedition.",
     longDescription:
-      "Launchpad gives product teams a flexible set of landing-page sections designed for clear messaging, quick iteration, and a crisp handoff. Adapt the storytelling flow, then make the kit your own.",
-    creator: "Northstar Studio",
-    creatorInitials: "NS",
-    image: templateImage,
-    accent: "violet",
-    includes: ["12 responsive page sections", "Editable design tokens", "Launch checklist"],
+      "Start a new run with a practical Nova Credits cache for fictional NovaVerse account top-ups. This local storefront preview demonstrates a transparent bundle, price, and delivery experience before a real commerce catalog is connected.",
+    creator: "Nebula Forge",
+    creatorInitials: "NF",
+    image: novaImage,
+    accent: "cyan",
+    includes: ["1,200 Nova Credits", "120 bonus credits", "Digital delivery preview"],
   },
   {
-    id: "product-studiofolio",
-    slug: "studiofolio-portfolio-template",
-    title: "Studiofolio Portfolio Template",
+    id: "product-nova-vanguard",
+    slug: "novaverse-vanguard-vault",
+    title: "Vanguard Vault",
     category: "Templates",
-    price: 18,
-    description: "A focused portfolio framework for independent creatives.",
+    game: "NovaVerse",
+    currency: "Nova Credits",
+    bundleLabel: "4,000 + 600 bonus",
+    delivery: "Digital credit delivery",
+    price: 20,
+    description: "A higher-value credit vault for long-haul missions.",
     longDescription:
-      "Studiofolio is a deliberately simple portfolio template that leaves space for the work. Use it to shape project stories, establish a visual system, and build a memorable first impression.",
-    creator: "Lumen House",
-    creatorInitials: "LH",
-    image: templateImage,
+      "The Vanguard Vault provides a larger fictional Nova Credits bundle with a clear bonus indicator and a simple virtual-delivery handoff. It is structured for players who want one concise, high-value top-up option.",
+    creator: "Nebula Forge",
+    creatorInitials: "NF",
+    image: novaImage,
     accent: "indigo",
-    includes: ["Project case-study layouts", "Portfolio home variations", "Style guide starter"],
+    includes: ["4,000 Nova Credits", "600 bonus credits", "Digital delivery preview"],
   },
   {
-    id: "product-halo-gradients",
-    slug: "halo-gradient-objects",
-    title: "Halo Gradient Objects",
+    id: "product-aether-trailblazer",
+    slug: "arcane-realms-trailblazer-pouch",
+    title: "Trailblazer Pouch",
     category: "Design Resources",
-    price: 16,
-    description: "Tactile 3D forms and luminous gradients for expressive work.",
+    game: "Arcane Realms",
+    currency: "Aether Coins",
+    bundleLabel: "850 + 85 bonus",
+    delivery: "Digital coin delivery",
+    price: 6,
+    description: "A compact Aether Coins bundle for the next quest.",
     longDescription:
-      "Halo is a compact collection of dimensional shapes, smooth color surfaces, and versatile background pieces. It is made for presentations, social concepts, landing pages, and experimental visual systems.",
-    creator: "Mira Sol",
-    creatorInitials: "MS",
-    image: designImage,
-    accent: "cyan",
-    includes: ["36 3D objects", "Gradient background set", "PNG and SVG exports"],
-  },
-  {
-    id: "product-orbit-icons",
-    slug: "orbit-icon-library",
-    title: "Orbit Icon Library",
-    category: "Design Resources",
-    price: 12,
-    description: "A playful, purposeful icon set with a forward-looking edge.",
-    longDescription:
-      "Orbit pairs clean geometry with lively visual details. The library provides a consistent starting point for product interfaces, editorial layouts, and creative brand touchpoints.",
-    creator: "Mira Sol",
-    creatorInitials: "MS",
-    image: designImage,
-    accent: "lilac",
-    includes: ["160 scalable icons", "Outline and filled styles", "Figma-ready library"],
-  },
-  {
-    id: "product-client-os",
-    slug: "client-os-workspace",
-    title: "Client OS Workspace",
-    category: "Business Tools",
-    price: 28,
-    description: "A practical project hub for focused client work.",
-    longDescription:
-      "Client OS makes a demanding service workflow feel more manageable. Organize delivery, priorities, notes, and conversations in one adaptable workspace made for a small studio or solo operation.",
-    creator: "Northstar Studio",
-    creatorInitials: "NS",
-    image: businessImage,
-    accent: "cyan",
-    includes: ["Project overview dashboard", "Client onboarding flow", "Weekly planning pages"],
-  },
-  {
-    id: "product-focus-plan",
-    slug: "focus-plan-toolkit",
-    title: "Focus Plan Toolkit",
-    category: "Business Tools",
-    price: 14,
-    description: "A gentle operating system for goals, habits, and next actions.",
-    longDescription:
-      "Focus Plan offers structured, low-friction templates for planning a week, reviewing priorities, and keeping high-value tasks visible without turning your day into a complex system.",
-    creator: "Lumen House",
-    creatorInitials: "LH",
-    image: businessImage,
+      "Trailblazer Pouch is a fictional Arcane Realms currency bundle designed around an easy-to-read value proposition. Its local preview flow makes quantity, bonus, price, and virtual delivery expectations visible before checkout.",
+    creator: "Arcane Studio",
+    creatorInitials: "AS",
+    image: arcaneImage,
     accent: "violet",
-    includes: ["Weekly planning template", "Goal review prompts", "Lightweight KPI tracker"],
+    includes: ["850 Aether Coins", "85 bonus coins", "Digital delivery preview"],
+  },
+  {
+    id: "product-aether-royal",
+    slug: "arcane-realms-royal-treasury",
+    title: "Royal Treasury",
+    category: "Design Resources",
+    game: "Arcane Realms",
+    currency: "Aether Coins",
+    bundleLabel: "3,500 + 525 bonus",
+    delivery: "Digital coin delivery",
+    price: 22,
+    description: "A royal coin reserve with an extra-value bonus.",
+    longDescription:
+      "Royal Treasury is a fictional Arcane Realms coin bundle for more substantial local top-up demonstrations. The offer highlights exactly what is included and routes the shopper through the same clear cart experience.",
+    creator: "Arcane Studio",
+    creatorInitials: "AS",
+    image: arcaneImage,
+    accent: "lilac",
+    includes: ["3,500 Aether Coins", "525 bonus coins", "Digital delivery preview"],
+  },
+  {
+    id: "product-pulse-matchday",
+    slug: "neon-circuit-matchday-stack",
+    title: "Matchday Stack",
+    category: "Business Tools",
+    game: "Neon Circuit",
+    currency: "Pulse Tokens",
+    bundleLabel: "1,500 + 150 bonus",
+    delivery: "Digital token delivery",
+    price: 9,
+    description: "A bright pulse-token stack for everyday play.",
+    longDescription:
+      "Matchday Stack presents a fictional Neon Circuit token bundle in a fast, game-forward merchandising layout. It prioritizes an easy comparison between the main token amount, the bonus, and the listed price.",
+    creator: "Neon Circuit Co.",
+    creatorInitials: "NC",
+    image: arcadeImage,
+    accent: "cyan",
+    includes: ["1,500 Pulse Tokens", "150 bonus tokens", "Digital delivery preview"],
+  },
+  {
+    id: "product-pulse-champion",
+    slug: "neon-circuit-champion-bundle",
+    title: "Champion Bundle",
+    category: "Business Tools",
+    game: "Neon Circuit",
+    currency: "Pulse Tokens",
+    bundleLabel: "5,000 + 1,000 bonus",
+    delivery: "Digital token delivery",
+    price: 28,
+    description: "A high-value token bundle for a full season of play.",
+    longDescription:
+      "Champion Bundle is a fictional Neon Circuit top-up option that gives the catalog a strong premium anchor. It retains the local cart and checkout simulation while making the virtual delivery context explicit.",
+    creator: "Neon Circuit Co.",
+    creatorInitials: "NC",
+    image: arcadeImage,
+    accent: "violet",
+    includes: ["5,000 Pulse Tokens", "1,000 bonus tokens", "Digital delivery preview"],
   },
 ];
 
 export const creators: Creator[] = [
-  { name: "Northstar Studio", initials: "NS", productCount: 14, role: "Digital systems", accent: "violet" },
-  { name: "Mira Sol", initials: "MS", productCount: 9, role: "Visual resources", accent: "cyan" },
-  { name: "Lumen House", initials: "LH", productCount: 11, role: "Creative templates", accent: "indigo" },
-  { name: "Kite & Co.", initials: "KC", productCount: 7, role: "Business tools", accent: "lilac" },
+  { name: "NovaVerse", initials: "NV", productCount: 12, role: "Sci-fi frontier", accent: "cyan" },
+  { name: "Arcane Realms", initials: "AR", productCount: 9, role: "Fantasy adventure", accent: "violet" },
+  { name: "Neon Circuit", initials: "NC", productCount: 11, role: "Competitive arcade", accent: "indigo" },
+  { name: "Skyfall Legends", initials: "SL", productCount: 7, role: "Open-world RPG", accent: "lilac" },
 ];
 
 export function getProductBySlug(slug: string) {
   return products.find((product) => product.slug === slug);
 }
 
-export function filterProducts(productsToFilter: MarketplaceProduct[], category: Category | "All", query: string) {
+export function filterProducts(
+  productsToFilter: MarketplaceProduct[],
+  category: Category | "All",
+  query: string,
+  game: GameFilter = "All games",
+) {
   const normalizedQuery = query.trim().toLowerCase();
   return productsToFilter.filter((product) => {
     const matchesCategory = category === "All" || product.category === category;
-    const searchable = `${product.title} ${product.category} ${product.creator} ${product.description}`.toLowerCase();
-    return matchesCategory && (!normalizedQuery || searchable.includes(normalizedQuery));
+    const matchesGame = game === "All games" || product.game === game;
+    const searchable = `${product.title} ${product.category} ${product.game} ${product.currency} ${product.bundleLabel} ${product.creator} ${product.description}`.toLowerCase();
+    return matchesCategory && matchesGame && (!normalizedQuery || searchable.includes(normalizedQuery));
   });
 }
 

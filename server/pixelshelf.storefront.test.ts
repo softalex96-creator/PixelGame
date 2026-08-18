@@ -9,9 +9,15 @@ describe("PixelShelf storefront data", () => {
     expect(filterProducts(products, "Business Tools", "").every((product) => product.category === "Business Tools")).toBe(true);
   });
 
-  it("matches assets by product title and creator", () => {
-    expect(filterProducts(products, "All", "orbit")).toHaveLength(1);
-    expect(filterProducts(products, "All", "Northstar")).toHaveLength(2);
+  it("filters the catalog by each featured game world", () => {
+    expect(filterProducts(products, "All", "", "NovaVerse").every((product) => product.game === "NovaVerse")).toBe(true);
+    expect(filterProducts(products, "All", "", "Arcane Realms").every((product) => product.game === "Arcane Realms")).toBe(true);
+    expect(filterProducts(products, "All", "", "Neon Circuit").every((product) => product.game === "Neon Circuit")).toBe(true);
+  });
+
+  it("matches currency packs by title and game name", () => {
+    expect(filterProducts(products, "All", "champion")).toHaveLength(1);
+    expect(filterProducts(products, "All", "novaverse")).toHaveLength(2);
   });
 });
 
