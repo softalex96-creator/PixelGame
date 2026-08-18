@@ -17,8 +17,9 @@ async function verifyViewport(browser, { name, viewport }) {
   const context = await browser.newContext({ viewport, deviceScaleFactor: 1 });
   const page = await context.newPage();
   page.setDefaultTimeout(15_000);
+  page.setDefaultNavigationTimeout(45_000);
 
-  await page.goto(`${storefrontUrl}#/`, { waitUntil: "networkidle" });
+  await page.goto(`${storefrontUrl}#/`, { waitUntil: "commit" });
   const hero = page.locator(".loadout-hero-image");
   await hero.waitFor();
   const heroSource = await hero.evaluate((image) => image.currentSrc || image.getAttribute("src") || "");

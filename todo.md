@@ -101,4 +101,5 @@
 - [x] Update the price-tier regression expectation for the expanded nine-bundle catalogue and re-run the full test suite
 - [x] Audit production image URLs, CDN responses, and GitHub Pages asset routing for the broken product-card images
 - [x] Replace the broken image delivery path with a production-safe static asset route and add a regression assertion
-- [ ] Verify image loading on pixelgame.pro across desktop and mobile, then save and publish the fix
+- [x] Verify image loading on pixelgame.pro across desktop and mobile, then save and publish the fix
+- [x] Save a dedicated checkpoint for the published production image-loading fix and report its restore URL
