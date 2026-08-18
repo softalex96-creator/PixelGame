@@ -2,37 +2,31 @@ import { describe, expect, it } from "vitest";
 import { addProductToLocalCart, setLocalCartQuantity } from "../client/src/contexts/LocalCartContext";
 import { filterProducts, products } from "../client/src/lib/pixelshelf-data";
 
-describe("PixelGame storefront data", () => {
-  it("filters the catalog by each required category label", () => {
-    expect(filterProducts(products, "Templates", "").every((product) => product.category === "Templates")).toBe(true);
-    expect(filterProducts(products, "Design Resources", "").every((product) => product.category === "Design Resources")).toBe(true);
-    expect(filterProducts(products, "Business Tools", "").every((product) => product.category === "Business Tools")).toBe(true);
-  });
-
-  it("filters the catalog by each featured game world", () => {
-    expect(filterProducts(products, "All", "", "NovaVerse").every((product) => product.game === "NovaVerse")).toBe(true);
-    expect(filterProducts(products, "All", "", "Arcane Realms").every((product) => product.game === "Arcane Realms")).toBe(true);
-    expect(filterProducts(products, "All", "", "Neon Circuit").every((product) => product.game === "Neon Circuit")).toBe(true);
-  });
-
-  it("matches currency packs by title and game name", () => {
-    expect(filterProducts(products, "All", "champion")).toHaveLength(1);
-    expect(filterProducts(products, "All", "novaverse")).toHaveLength(3);
-  });
-
-  it("ships three original local-preview bundles for each featured world", () => {
-    expect(products).toHaveLength(9);
-    for (const world of ["NovaVerse", "Arcane Realms", "Neon Circuit"] as const) {
-      const worldProducts = filterProducts(products, "All", "", world);
-      expect(worldProducts).toHaveLength(3);
-      expect(worldProducts.every((product) => product.image.startsWith("https://files.manuscdn.com/"))).toBe(true);
-      expect(worldProducts.every((product) => !product.image.startsWith("/manus-storage/"))).toBe(true);
-      expect(worldProducts.every((product) => product.longDescription.includes("fictional") || product.longDescription.includes("original"))).toBe(true);
+describe("PixelGame retro arcade storefront data", () => {
+  it("filters the catalog by every local product-type lane", () => {
+    for (const category of ["Currency", "Skins", "Mods", "Guides"] as const) {
+      expect(filterProducts(products, category, "").every((product) => product.category === category)).toBe(true);
     }
+  });
+
+  it("filters every featured fictional arcade world", () => {
+    for (const world of ["Neon Drift", "Star Siege '86", "Ironwood Quest", "Circuit Brawl"] as const) {
+      const results = filterProducts(products, "All", "", world);
+      expect(results).toHaveLength(4);
+      expect(results.every((product) => product.game === world)).toBe(true);
+    }
+  });
+
+  it("ships sixteen original local-preview digital goods without preview-only image paths", () => {
+    expect(products).toHaveLength(16);
+    expect(products.every((product) => product.image.startsWith("https://files.manuscdn.com/"))).toBe(true);
+    expect(products.every((product) => !product.image.startsWith("/manus-storage/"))).toBe(true);
+    expect(products.every((product) => product.delivery === "Local preview delivery")).toBe(true);
+    expect(products.every((product) => product.longDescription.includes("No real charge"))).toBe(true);
   });
 });
 
-describe("PixelShelf local cart", () => {
+describe("PixelGame local arcade cart", () => {
   it("increments an existing item and removes a line when its quantity becomes zero", () => {
     const product = products[0];
     const once = addProductToLocalCart([], product);

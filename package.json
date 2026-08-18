@@ -111,11 +111,9 @@
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "dev": "NODE_ENV=development tsx watch server/_core/index.ts",
     "format": "prettier --write .",
-    "shopify:probe": "tsx scripts/shopify-probe.runner.ts",
-    "shopify:smoke:populated": "SHOPIFY_CATALOG_STATE=populated vitest run server/shopify.smoke.test.ts",
     "start": "NODE_ENV=production node dist/index.js",
     "test": "vitest run",
-    "verify:loadout-assets": "node scripts/verify-loadout-world-assets.mjs",
+    "verify:arcade-assets": "node scripts/verify-retro-arcade-assets.mjs",
     "verify:production": "node scripts/verify-production-flow.mjs"
   },
   "type": "module",

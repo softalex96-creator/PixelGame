@@ -23,11 +23,11 @@ describe("PixelShelf preferences", () => {
 
 describe("PixelShelf autocomplete", () => {
   it("returns short ranked suggestions from game, currency, and bundle data", () => {
-    const suggestions = getSearchSuggestions("nova");
+    const suggestions = getSearchSuggestions("neon");
     expect(suggestions.length).toBeGreaterThan(0);
     expect(suggestions.length).toBeLessThanOrEqual(5);
-    expect(suggestions[0]?.label.toLowerCase()).toContain("nova");
-    expect(suggestions.some((suggestion) => suggestion.label === "NovaVerse")).toBe(true);
+    expect(suggestions[0]?.label.toLowerCase()).toContain("neon");
+    expect(suggestions.some((suggestion) => suggestion.label === "Neon Drift")).toBe(true);
     expect(suggestions.some((suggestion) => suggestion.type === "currency")).toBe(true);
     expect(getSearchSuggestions("   ")).toEqual([]);
   });

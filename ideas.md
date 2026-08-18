@@ -1,7 +1,7 @@
-# PixelGame — Loadout Console
+# PixelGame — Retro Arcade Selection Deck
 
-PixelGame is a **neon game-currency marketplace**, not a generic SaaS shop. The interface should feel like a calm, premium loadout terminal for fictional game worlds: midnight navy depth, electric cyan as the shared action signal, world-specific violet/coral accents, technical labels, and short game-native language.
+PixelGame is a **curated fictional digital-goods arcade**, not a seller marketplace and not a generic ecommerce template. Its visual world is a premium 1980s cabinet after dark: CRT black, phosphor mint, laser magenta, cartridge gold, indigo shadows, scanline restraint and pixel-grid perspective. It sells transparent local-preview currency bundles, cosmetics, mod packs and field guides.
 
-The signature moment is the **Loadout Console**: choose a world, select a fictional bundle, and add it to a transparent local-preview cart. Use original abstract tokens, luminous energy cells, and glass/metal console surfaces. Avoid brand logos, real game key art, discount theatrics, payment-card symbols, and copied marketplace tiles.
+The signature interaction is the **Arcade Selection Deck**. Four physical-looking cabinet buttons—Currency, Skins, Mods and Guides—change the selected lane, the hero readout and its product rail. The interaction represents an actual choice about what visitors are browsing; it is not decorative navigation.
 
-Display typography is Space Grotesk: close-set, confident, and used in short headlines. DM Sans handles commerce details. Cards should behave like a modular catalogue rail with clear price, bundle value, and local-preview context. Motion is restrained: hover lift, controlled image zoom, and no decorative animation that competes with browsing.
+Use `Press Start 2P` only for compact Latin display labels, `Russo One` for Cyrillic display fallback, `Chakra Petch` for readable body copy, and `IBM Plex Mono` for metadata. Cards resemble clean game cartridges rather than generic rounded SaaS tiles: pixel corners, a type icon, short factual metadata, a price and a clear local-preview delivery note. Original assets must contain no readable text, logos, game characters or third-party references. Avoid casino tropes, fake scarcity, seller claims, real-delivery promises and copied marketplace layouts.

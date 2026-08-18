@@ -103,9 +103,12 @@
 - [x] Replace the broken image delivery path with a production-safe static asset route and add a regression assertion
 - [x] Verify image loading on pixelgame.pro across desktop and mobile, then save and publish the fix
 - [x] Save a dedicated checkpoint for the published production image-loading fix and report its restore URL
-- [ ] Save a pre-retro-redesign backup checkpoint and record the restore URL
-- [ ] Audit the current Shopify usage in PixelGame and remove it from the storefront runtime, local catalog flow, tests, and release checks without deleting the external store
-- [ ] Research ten comparable game-currency, skins, mods, and digital-goods storefronts; document transferable UX patterns without copying brands or assets
-- [ ] Define an original 1980s retro-gaming PixelGame system, content taxonomy, and product catalogue for currency, skins, mods, and guides
-- [ ] Implement the Shopify-free retro storefront with an expanded local digital-goods catalogue and original visual assets
-- [ ] Add or update automated coverage for the new catalogue and confirm the redesigned storefront across desktop and mobile before publishing
+- [x] Save a pre-retro-redesign backup checkpoint and record the restore URL (manus-webdev://d6673fd8)
+- [x] Audit the current Shopify usage in PixelGame and remove it from the storefront runtime, local catalog flow, tests, and release checks without deleting the external store
+- [x] Research ten comparable game-currency, skins, mods, and digital-goods storefronts; document transferable UX patterns without copying brands or assets
+- [x] Define an original 1980s retro-gaming PixelGame system, content taxonomy, and product catalogue for currency, skins, mods, and guides
+- [x] Implement the Shopify-free retro storefront with an expanded local digital-goods catalogue and original visual assets
+- [x] Add or update automated coverage for the new catalogue and confirm the redesigned storefront across desktop and mobile before publishing
+- [x] Generate and wire four distinct original retro-arcade world artworks with no embedded text, logos or legacy Loadout imagery
+- [x] Re-run desktop/mobile visual verification and public-CDN smoke checks after replacing the catalogue artwork
+- [x] Visually verify all four final retro-arcade source artworks for absence of embedded text, logos and legacy Loadout imagery, then document the evidence

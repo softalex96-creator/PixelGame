@@ -68,10 +68,10 @@ describe("PixelGame buyer account state", () => {
 
 describe("PixelGame price controls", () => {
   it("filters packs by price tier and sorts the filtered result without mutating the catalogue", () => {
-    expect(filterAndSortProducts(products, "All", "", "All games", "budget", "price-asc").map((product) => product.price)).toEqual([6, 7, 9]);
-    expect(filterAndSortProducts(products, "All", "", "All games", "standard", "price-desc").map((product) => product.price)).toEqual([20]);
-    expect(filterAndSortProducts(products, "All", "", "All games", "premium", "featured").map((product) => product.price)).toEqual([22, 28, 39, 35, 46]);
-    expect(products.map((product) => product.price)).toEqual([7, 20, 6, 22, 9, 28, 39, 35, 46]);
+    expect(filterAndSortProducts(products, "All", "", "All games", "budget", "price-asc").map((product) => product.price)).toEqual([4, 4, 5, 5, 5, 6, 7, 7, 8]);
+    expect(filterAndSortProducts(products, "All", "", "All games", "standard", "price-desc").map((product) => product.price)).toEqual([14, 13, 12, 10, 9]);
+    expect(filterAndSortProducts(products, "All", "", "All games", "premium", "featured").map((product) => product.price)).toEqual([16, 15]);
+    expect(products.map((product) => product.price)).toEqual([8, 14, 6, 4, 12, 16, 7, 5, 10, 13, 5, 5, 9, 15, 7, 4]);
   });
 
   it("formats the USD base catalogue in each supported display currency", () => {

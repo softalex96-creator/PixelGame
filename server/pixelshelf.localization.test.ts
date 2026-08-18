@@ -13,12 +13,13 @@ describe("PixelShelf language localization", () => {
     const localized = getLocalizedProduct(product, "ru");
     expect(localized.id).toBe(product.id);
     expect(localized.price).toBe(product.price);
-    expect(localized.title).toBe("Набор исследователя");
-    expect(localized.bundleLabel).toContain("бонус");
+    expect(localized.title).toBe(product.title);
+    expect(localized.description).toContain("Оригинальный товар PixelGame");
+    expect(localized.delivery).toBe("Локальная демонстрационная выдача");
   });
 
   it("resolves Russian category labels and honors query language over persisted language", () => {
-    expect(getLocalizedCategory("Design Resources", "ru")).toBe("Дизайн-ресурсы");
+    expect(getLocalizedCategory("Currency", "ru")).toBe("Валюта");
     expect(resolveInitialLocale("ru", "?lang=en")).toBe("en");
     expect(resolveInitialLocale("ru", "")).toBe("ru");
     expect(resolveInitialLocale(null, "?lang=ru")).toBe("ru");
