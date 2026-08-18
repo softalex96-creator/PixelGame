@@ -122,5 +122,5 @@
 - [x] Push the verified source update to GitHub Pages from main
 - [ ] Verify the published pixelgame.pro storefront after deployment
 - [x] Fix the GitHub Pages hash-route duplication in the catalogue navigation and re-verify production routing
-- [ ] Save a checkpoint for the GitHub Pages section-navigation correction
+- [x] Save a checkpoint for the GitHub Pages section-navigation correction
 - [ ] Push the section-navigation correction to GitHub Pages main
