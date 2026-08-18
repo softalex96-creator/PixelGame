@@ -23,4 +23,13 @@
 - [x] Verify the revised storefront on desktop and mobile
 - [x] Add game-world browsing filters while retaining the required exact pack-type labels
 - [x] Update storefront tests to validate game-world filtering alongside pack-type and cart behavior
-- [ ] Save a new review checkpoint for the verified game-currency storefront
+- [x] Save a new review checkpoint for the verified game-currency storefront
+- [x] Add a persistent English/Russian language selector in the storefront navigation
+- [x] Localize buyer-facing navigation, catalog, product-detail, and cart interface text into English and Russian
+- [x] Add automated coverage for language selection and verify both language views on desktop and mobile
+- [ ] Save a review checkpoint for the localized storefront
+- [x] Localize remaining Russian buyer-facing catalog labels and featured-world role copy
+- [x] Add unit coverage for persisted and query-parameter language initialization
+- [x] Verify English and Russian storefront views on desktop and mobile before saving the localized checkpoint
+- [x] Verify the English desktop product-detail view and localized cart UI in English and Russian at desktop and mobile viewports
+- [ ] Save the localized review checkpoint after full bilingual viewport verification

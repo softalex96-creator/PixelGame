@@ -1,0 +1,228 @@
+import { type Category, type MarketplaceProduct } from "@/lib/pixelshelf-data";
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+
+export type Locale = "en" | "ru";
+
+const copy = {
+  en: {
+    games: "Games",
+    currencyPacks: "Currency packs",
+    howItWorks: "How it works",
+    searchCurrencyPacks: "Search currency packs",
+    heroEyebrow: "Virtual currency, ready for the next run",
+    heroHeading: "Power up your",
+    heroAccent: "next play.",
+    heroDescription: "Browse original game-currency packs with clear bonus values, instant local cart updates, and a streamlined top-up flow.",
+    searchGames: "Search games, currencies, or bundles",
+    search: "Search",
+    browseCurrencyPacks: "Browse currency packs",
+    heroArtLabel: "PixelShelf / Game Vault",
+    heroArtTitle: "More play, ready when you are.",
+    freshDrops: "Fresh drops",
+    catalogHeading: "Choose your world. Stack your currency.",
+    catalogDescription: "Compare curated local currency bundles across a set of fictional game worlds.",
+    allGames: "All games",
+    allPackTypes: "All",
+    packType: "Pack type",
+    packs: "packs",
+    viewBundle: "View bundle",
+    noPacks: "No packs matched your search.",
+    noPacksCopy: "Try a different game, currency, or pack type.",
+    featuredWorlds: "Featured worlds",
+    featuredHeading: "Find the game you want to power up.",
+    nextRun: "Ready for the next run",
+    closingHeading: "Pick a bundle. Power your play.",
+    exploreAllPacks: "Explore all packs",
+    footer: "Made for ideas in motion.",
+    cart: "Cart",
+    yourTopUp: "Your top-up",
+    topUpRequestComplete: "Top-up request complete",
+    topUpCompleteCopy: "This local preview cleared your cart. Connect the action to an approved virtual-currency checkout when your live catalog is ready.",
+    keepBrowsing: "Keep browsing",
+    queueClear: "Your queue is clear",
+    queueCopy: "Add a currency pack and it will stay here while you browse.",
+    explorePacks: "Explore packs",
+    subtotal: "Subtotal",
+    cartNote: "Local preview checkout. Connect only approved virtual-item checkout and fulfillment after your catalog is ready.",
+    continueTopUp: "Continue to top-up",
+    closeCart: "Close cart",
+    decrease: "Decrease quantity",
+    increase: "Increase quantity",
+    remove: "Remove",
+    backToCatalog: "Back to catalog",
+    preview: "Digital asset preview",
+    virtualCurrencyBundle: "virtual currency bundle",
+    instantDownload: "Instant download",
+    addToTopUp: "Add to top-up",
+    included: "What’s included",
+    detailNote: "A local top-up flow is active for this preview. Connect approved virtual-item checkout and fulfillment only after your real catalog is ready.",
+    missingTitle: "That pack has moved out of the vault.",
+    browseVault: "Browse PixelShelf",
+  },
+  ru: {
+    games: "Игры",
+    currencyPacks: "Валютные наборы",
+    howItWorks: "Как это работает",
+    searchCurrencyPacks: "Поиск валютных наборов",
+    heroEyebrow: "Игровая валюта для следующего забега",
+    heroHeading: "Усильте свою",
+    heroAccent: "следующую игру.",
+    heroDescription: "Выбирайте оригинальные наборы игровой валюты с понятными бонусами, мгновенным обновлением локальной корзины и простым потоком пополнения.",
+    searchGames: "Поиск игр, валюты или наборов",
+    search: "Найти",
+    browseCurrencyPacks: "Смотреть валютные наборы",
+    heroArtLabel: "PixelShelf / Игровое хранилище",
+    heroArtTitle: "Больше игры — когда вы готовы.",
+    freshDrops: "Новые поступления",
+    catalogHeading: "Выберите мир. Пополните валюту.",
+    catalogDescription: "Сравнивайте локальные демонстрационные наборы валюты из вымышленных игровых миров.",
+    allGames: "Все игры",
+    allPackTypes: "Все",
+    packType: "Тип набора",
+    packs: "наборов",
+    viewBundle: "Открыть набор",
+    noPacks: "По вашему запросу наборов не найдено.",
+    noPacksCopy: "Попробуйте другую игру, валюту или тип набора.",
+    featuredWorlds: "Избранные миры",
+    featuredHeading: "Найдите игру, которую хотите усилить.",
+    nextRun: "Готово к следующему забегу",
+    closingHeading: "Выберите набор. Усильте игру.",
+    exploreAllPacks: "Все наборы",
+    footer: "Создано для идей в движении.",
+    cart: "Корзина",
+    yourTopUp: "Ваше пополнение",
+    topUpRequestComplete: "Заявка на пополнение оформлена",
+    topUpCompleteCopy: "В локальном предварительном просмотре корзина очищена. Подключите проверенный платёжный поток для игровой валюты, когда живой каталог будет готов.",
+    keepBrowsing: "Продолжить просмотр",
+    queueClear: "Ваша очередь пуста",
+    queueCopy: "Добавьте валютный набор — он сохранится здесь, пока вы продолжаете просмотр.",
+    explorePacks: "Смотреть наборы",
+    subtotal: "Подытог",
+    cartNote: "Локальный демонстрационный checkout. Подключайте одобренную оплату и выдачу виртуальных товаров после подготовки каталога.",
+    continueTopUp: "Перейти к пополнению",
+    closeCart: "Закрыть корзину",
+    decrease: "Уменьшить количество",
+    increase: "Увеличить количество",
+    remove: "Удалить",
+    backToCatalog: "Вернуться к каталогу",
+    preview: "Предпросмотр цифрового товара",
+    virtualCurrencyBundle: "набор игровой валюты",
+    instantDownload: "Мгновенное получение",
+    addToTopUp: "Добавить к пополнению",
+    included: "Что входит в набор",
+    detailNote: "В этом предварительном просмотре включён локальный поток пополнения. Подключите одобренную оплату и выдачу виртуальных товаров после подготовки реального каталога.",
+    missingTitle: "Этот набор больше не доступен в хранилище.",
+    browseVault: "Открыть PixelShelf",
+  },
+} as const;
+
+const russianProductCopy: Record<string, Partial<Pick<MarketplaceProduct, "title" | "description" | "longDescription" | "bundleLabel" | "delivery" | "includes">>> = {
+  "product-nova-explorer": {
+    title: "Набор исследователя",
+    description: "Стартовое пополнение для следующей экспедиции.",
+    longDescription: "Начните новый забег с практичным запасом Nova Credits для вымышленного аккаунта NovaVerse. Локальный предварительный просмотр демонстрирует прозрачный набор, цену и процесс получения до подключения реального коммерческого каталога.",
+    bundleLabel: "1 200 + 120 бонус",
+    delivery: "Цифровая выдача кредитов",
+    includes: ["1 200 Nova Credits", "120 бонусных кредитов", "Предпросмотр цифровой выдачи"],
+  },
+  "product-nova-vanguard": {
+    title: "Хранилище авангарда",
+    description: "Выгодный запас кредитов для долгих миссий.",
+    longDescription: "Хранилище авангарда — это увеличенный вымышленный набор Nova Credits с понятным указанием бонуса и простым переходом к виртуальной выдаче. Он создан для игроков, которым нужен один заметный вариант пополнения.",
+    bundleLabel: "4 000 + 600 бонус",
+    delivery: "Цифровая выдача кредитов",
+    includes: ["4 000 Nova Credits", "600 бонусных кредитов", "Предпросмотр цифровой выдачи"],
+  },
+  "product-aether-trailblazer": {
+    title: "Кошель первопроходца",
+    description: "Компактный набор Aether Coins для следующего задания.",
+    longDescription: "Кошель первопроходца — это вымышленный набор валюты Arcane Realms с легко считываемой ценностью. Локальный поток делает количество, бонус, цену и ожидания по виртуальной выдаче понятными до checkout.",
+    bundleLabel: "850 + 85 бонус",
+    delivery: "Цифровая выдача монет",
+    includes: ["850 Aether Coins", "85 бонусных монет", "Предпросмотр цифровой выдачи"],
+  },
+  "product-aether-royal": {
+    title: "Королевская казна",
+    description: "Королевский запас монет с бонусом к ценности.",
+    longDescription: "Королевская казна — это вымышленный набор монет Arcane Realms для более крупных демонстраций пополнения. В предложении точно показано наполнение, а покупатель проходит через тот же понятный поток корзины.",
+    bundleLabel: "3 500 + 525 бонус",
+    delivery: "Цифровая выдача монет",
+    includes: ["3 500 Aether Coins", "525 бонусных монет", "Предпросмотр цифровой выдачи"],
+  },
+  "product-pulse-matchday": {
+    title: "Набор матча",
+    description: "Яркий запас Pulse Tokens для ежедневной игры.",
+    longDescription: "Набор матча представляет вымышленный комплект токенов Neon Circuit в динамичном игровом оформлении. В нём легко сравнить основное количество токенов, бонус и указанную цену.",
+    bundleLabel: "1 500 + 150 бонус",
+    delivery: "Цифровая выдача токенов",
+    includes: ["1 500 Pulse Tokens", "150 бонусных токенов", "Предпросмотр цифровой выдачи"],
+  },
+  "product-pulse-champion": {
+    title: "Набор чемпиона",
+    description: "Выгодный набор токенов для полного игрового сезона.",
+    longDescription: "Набор чемпиона — это вымышленный вариант пополнения Neon Circuit с сильной премиальной ценностью. Он сохраняет локальную корзину и демонстрацию checkout, подчёркивая контекст виртуальной выдачи.",
+    bundleLabel: "5 000 + 1 000 бонус",
+    delivery: "Цифровая выдача токенов",
+    includes: ["5 000 Pulse Tokens", "1 000 бонусных токенов", "Предпросмотр цифровой выдачи"],
+  },
+};
+
+const russianCategoryCopy: Record<Category, string> = {
+  Templates: "Шаблоны",
+  "Design Resources": "Дизайн-ресурсы",
+  "Business Tools": "Бизнес-инструменты",
+};
+
+const russianCreatorRoles: Record<string, string> = {
+  "Sci-fi frontier": "Научно-фантастический мир",
+  "Fantasy adventure": "Фэнтезийное приключение",
+  "Competitive arcade": "Соревновательный аркадный мир",
+  "Open-world RPG": "Ролевая игра с открытым миром",
+};
+
+type LanguageContextValue = {
+  locale: Locale;
+  setLocale: (locale: Locale) => void;
+  t: (typeof copy)[Locale];
+};
+
+const LanguageContext = createContext<LanguageContextValue | null>(null);
+
+export function getLocalizedProduct(product: MarketplaceProduct, locale: Locale): MarketplaceProduct {
+  return locale === "ru" ? { ...product, ...russianProductCopy[product.id] } : product;
+}
+
+export function getLocalizedCategory(category: Category, locale: Locale) {
+  return locale === "ru" ? russianCategoryCopy[category] : category;
+}
+
+export function getLocalizedCreatorRole(role: string, locale: Locale) {
+  return locale === "ru" ? russianCreatorRoles[role] ?? role : role;
+}
+
+export function resolveInitialLocale(storedLocale: string | null, search: string): Locale {
+  const requestedLocale = new URLSearchParams(search).get("lang");
+  if (requestedLocale === "ru" || requestedLocale === "en") return requestedLocale;
+  return storedLocale === "ru" ? "ru" : "en";
+}
+
+export function LanguageProvider({ children }: { children: ReactNode }) {
+  const [locale, setLocale] = useState<Locale>(() => {
+    if (typeof window === "undefined") return "en";
+    return resolveInitialLocale(window.localStorage.getItem("pixelshelf:locale"), window.location.search);
+  });
+
+  useEffect(() => {
+    window.localStorage.setItem("pixelshelf:locale", locale);
+    document.documentElement.lang = locale;
+  }, [locale]);
+
+  const value = useMemo(() => ({ locale, setLocale, t: copy[locale] }), [locale]);
+  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;
+}
+
+export function useLanguage() {
+  const context = useContext(LanguageContext);
+  if (!context) throw new Error("useLanguage must be used within LanguageProvider");
+  return context;
+}

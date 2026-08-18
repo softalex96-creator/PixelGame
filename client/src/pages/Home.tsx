@@ -3,25 +3,28 @@ import { ArrowRight, ChevronRight, Search, ShoppingBag, Sparkles } from "lucide-
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
 import { useLocalCart } from "@/contexts/LocalCartContext";
+import { getLocalizedCategory, getLocalizedCreatorRole, getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
 
 function ProductCard({ product }: { product: MarketplaceProduct }) {
   const { addItem } = useLocalCart();
+  const { locale, t } = useLanguage();
+  const asset = getLocalizedProduct(product, locale);
   return (
-    <article className={`product-card accent-${product.accent}`}>
-      <Link href={`/product/${product.slug}`} className="product-image-wrap" aria-label={`View ${product.title}`}>
-        <img src={product.image} alt={`${product.title} preview`} />
-        <span className="product-category-badge">{product.game}</span>
+    <article className={`product-card accent-${asset.accent}`}>
+      <Link href={`/product/${asset.slug}`} className="product-image-wrap" aria-label={`${t.viewBundle}: ${asset.title}`}>
+        <img src={asset.image} alt={`${asset.title} preview`} />
+        <span className="product-category-badge">{asset.game}</span>
       </Link>
       <div className="product-card-copy">
-        <p className="creator-small"><span>{product.creatorInitials}</span>{product.game}</p>
+        <p className="creator-small"><span>{asset.creatorInitials}</span>{asset.game}</p>
         <div className="product-title-row">
-          <Link href={`/product/${product.slug}`}><h3>{product.title}</h3></Link>
-          <span>{formatPrice(product.price)}</span>
+          <Link href={`/product/${asset.slug}`}><h3>{asset.title}</h3></Link>
+          <span>{formatPrice(asset.price)}</span>
         </div>
-        <p className="product-description"><strong>{product.bundleLabel}</strong> · {product.description}</p>
+        <p className="product-description"><strong>{asset.bundleLabel}</strong> · {asset.description}</p>
         <div className="product-card-actions">
-          <Link href={`/product/${product.slug}`} className="view-link">View bundle <ArrowRight size={15} /></Link>
-          <button className="mini-cart-button" onClick={() => addItem(product)} aria-label={`Add ${product.title} to cart`}><ShoppingBag size={16} /></button>
+          <Link href={`/product/${asset.slug}`} className="view-link">{t.viewBundle} <ArrowRight size={15} /></Link>
+          <button className="mini-cart-button" onClick={() => addItem(product)} aria-label={`${t.addToTopUp}: ${asset.title}`}><ShoppingBag size={16} /></button>
         </div>
       </div>
     </article>
@@ -36,6 +39,7 @@ export default function Home() {
   const [game, setGame] = useState<GameFilter>("All games");
   const [query, setQuery] = useState(params.get("search") ?? "");
   const visibleProducts = useMemo(() => filterProducts(products, category, query, game), [category, game, query]);
+  const { locale, t } = useLanguage();
 
   function browseAssets() {
     document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
@@ -49,23 +53,23 @@ export default function Home() {
         <div className="hero-pulse pulse-two" />
         <div className="container hero-layout">
           <div className="hero-copy">
-            <p className="eyebrow eyebrow-light"><Sparkles size={14} /> Virtual currency, ready for the next run</p>
-            <h1>Power up your <em>next play.</em></h1>
-            <p className="hero-description">Browse original game-currency packs with clear bonus values, instant local cart updates, and a streamlined top-up flow.</p>
+            <p className="eyebrow eyebrow-light"><Sparkles size={14} /> {t.heroEyebrow}</p>
+            <h1>{t.heroHeading} <em>{t.heroAccent}</em></h1>
+            <p className="hero-description">{t.heroDescription}</p>
             <div className="hero-search">
               <Search size={20} />
-              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search games, currencies, or bundles" aria-label="Search currency packs" />
-              <button onClick={browseAssets} aria-label="Search the catalog">Search</button>
+              <input value={query} onChange={(event) => setQuery(event.target.value)} placeholder={t.searchGames} aria-label={t.searchCurrencyPacks} />
+              <button onClick={browseAssets} aria-label={t.search}>{t.search}</button>
             </div>
-            <button className="button button-hero call-to-action" onClick={browseAssets}>Browse currency packs <ArrowRight size={18} /></button>
+            <button className="button button-hero call-to-action" onClick={browseAssets}>{t.browseCurrencyPacks} <ArrowRight size={18} /></button>
           </div>
           <div className="hero-art" aria-hidden="true">
             <div className="art-disc disc-cyan" />
             <div className="art-card art-card-back"><span /></div>
             <div className="art-card art-card-front">
               <div className="art-card-icon"><Sparkles size={28} /></div>
-              <span>PixelShelf / Game Vault</span>
-              <strong>More play, ready when you are.</strong>
+              <span>{t.heroArtLabel}</span>
+              <strong>{t.heroArtTitle}</strong>
               <div className="art-card-bars"><i /><i /><i /></div>
             </div>
             <div className="art-token token-one">⌁</div>
@@ -77,29 +81,29 @@ export default function Home() {
       <section id="catalog" className="catalog-section container">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">Fresh drops</p>
-            <h2>Choose your world. Stack your currency.</h2>
+            <p className="eyebrow">{t.freshDrops}</p>
+            <h2>{t.catalogHeading}</h2>
           </div>
-          <p>Compare curated local currency bundles across a set of fictional game worlds.</p>
+          <p>{t.catalogDescription}</p>
         </div>
 
         <div className="catalog-controls">
           <div className="catalog-filter-stack">
             <div className="filter-row game-filter-row" aria-label="Game worlds">
               {gameFilters.map((item) => (
-                <button key={item} className={game === item ? "is-active" : ""} onClick={() => setGame(item)}>{item}</button>
+                <button key={item} className={game === item ? "is-active" : ""} onClick={() => setGame(item)}>{item === "All games" ? t.allGames : item}</button>
               ))}
             </div>
             <div className="pack-type-filter" aria-label="Currency pack types">
-              <span>Pack type</span>
+              <span>{t.packType}</span>
               <div className="filter-row">
                 {(["All", ...categories] as const).map((item) => (
-                  <button key={item} className={category === item ? "is-active" : ""} onClick={() => setCategory(item)}>{item}</button>
+                  <button key={item} className={category === item ? "is-active" : ""} onClick={() => setCategory(item)}>{item === "All" ? t.allPackTypes : getLocalizedCategory(item, locale)}</button>
                 ))}
               </div>
             </div>
           </div>
-          <span className="result-count">{visibleProducts.length} packs</span>
+          <span className="result-count">{visibleProducts.length} {t.packs}</span>
         </div>
 
         {visibleProducts.length > 0 ? (
@@ -107,7 +111,7 @@ export default function Home() {
             {visibleProducts.map((product) => <ProductCard key={product.id} product={product} />)}
           </div>
         ) : (
-          <div className="catalog-empty"><Sparkles size={22} /><h3>No packs matched your search.</h3><p>Try a different game, currency, or pack type.</p></div>
+          <div className="catalog-empty"><Sparkles size={22} /><h3>{t.noPacks}</h3><p>{t.noPacksCopy}</p></div>
         )}
       </section>
 
@@ -115,8 +119,8 @@ export default function Home() {
         <div className="container">
           <div className="section-heading spotlight-heading">
             <div>
-              <p className="eyebrow">Featured worlds</p>
-              <h2>Find the game you want to power up.</h2>
+              <p className="eyebrow">{t.featuredWorlds}</p>
+              <h2>{t.featuredHeading}</h2>
             </div>
             <button className="round-arrow" onClick={() => document.getElementById("creator-track")?.scrollBy({ left: 330, behavior: "smooth" })} aria-label="Scroll creator spotlight"><ChevronRight size={19} /></button>
           </div>
@@ -124,7 +128,7 @@ export default function Home() {
             {creators.map((creator) => (
               <article className={`creator-card accent-${creator.accent}`} key={creator.name}>
                 <span className="creator-avatar">{creator.initials}</span>
-                <div><p>{creator.role}</p><h3>{creator.name}</h3><span>{creator.productCount} products</span></div>
+                <div><p>{getLocalizedCreatorRole(creator.role, locale)}</p><h3>{creator.name}</h3><span>{creator.productCount} {t.packs}</span></div>
                 <ArrowRight className="creator-arrow" size={18} />
               </article>
             ))}
@@ -135,8 +139,8 @@ export default function Home() {
       <section className="closing-section container">
         <div className="closing-card">
           <span className="closing-orbit" />
-          <div><p className="eyebrow eyebrow-light">Ready for the next run</p><h2>Pick a bundle. Power your play.</h2></div>
-          <button className="button button-white" onClick={browseAssets}>Explore all packs <ArrowRight size={17} /></button>
+          <div><p className="eyebrow eyebrow-light">{t.nextRun}</p><h2>{t.closingHeading}</h2></div>
+          <button className="button button-white" onClick={browseAssets}>{t.exploreAllPacks} <ArrowRight size={17} /></button>
         </div>
       </section>
     </div>

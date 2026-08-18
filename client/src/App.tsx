@@ -3,6 +3,8 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import CartDrawer from "@/components/CartDrawer";
 import StorefrontNav from "@/components/StorefrontNav";
 import { LocalCartProvider } from "@/contexts/LocalCartContext";
+import { LanguageProvider } from "@/contexts/LanguageContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import NotFound from "@/pages/NotFound";
 import Home from "@/pages/Home";
 import ProductDetail from "@/pages/ProductDetail";
@@ -11,6 +13,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
 function Router() {
+  const { t } = useLanguage();
   return (
     <div className="app-shell">
       <StorefrontNav />
@@ -20,7 +23,7 @@ function Router() {
         <Route path="/404" component={NotFound} />
         <Route component={NotFound} />
       </Switch>
-      <footer className="site-footer"><div className="container"><span>© 2026 PixelShelf</span><span>Made for ideas in motion.</span></div></footer>
+      <footer className="site-footer"><div className="container"><span>© 2026 PixelShelf</span><span>{t.footer}</span></div></footer>
       <CartDrawer />
     </div>
   );
@@ -31,10 +34,12 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
         <TooltipProvider>
-          <LocalCartProvider>
-            <Toaster />
-            <Router />
-          </LocalCartProvider>
+          <LanguageProvider>
+            <LocalCartProvider>
+              <Toaster />
+              <Router />
+            </LocalCartProvider>
+          </LanguageProvider>
         </TooltipProvider>
       </ThemeProvider>
     </ErrorBoundary>

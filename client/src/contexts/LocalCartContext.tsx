@@ -55,7 +55,7 @@ function readSavedCart(): CartLine[] {
 
 export function LocalCartProvider({ children }: { children: ReactNode }) {
   const [lines, setLines] = useState<CartLine[]>(readSavedCart);
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(() => typeof window !== "undefined" && new URLSearchParams(window.location.search).get("cart") === "open");
   const [checkoutComplete, setCheckoutComplete] = useState(false);
 
   useEffect(() => {

@@ -1,4 +1,5 @@
 import { useLocalCart } from "@/contexts/LocalCartContext";
+import { useLanguage } from "@/contexts/LanguageContext";
 import { Search, ShoppingBag, Sparkles } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { Link, useLocation } from "wouter";
@@ -7,6 +8,7 @@ export default function StorefrontNav() {
   const [, navigate] = useLocation();
   const [search, setSearch] = useState("");
   const { itemCount, openCart } = useLocalCart();
+  const { locale, setLocale, t } = useLanguage();
 
   function handleSearch(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -22,9 +24,9 @@ export default function StorefrontNav() {
         </Link>
 
         <nav className="desktop-nav" aria-label="Marketplace navigation">
-          <Link href="/#catalog">Games</Link>
-          <Link href="/#catalog">Currency packs</Link>
-          <Link href="/#how-it-works">How it works</Link>
+          <Link href="/#catalog">{t.games}</Link>
+          <Link href="/#catalog">{t.currencyPacks}</Link>
+          <Link href="/#how-it-works">{t.howItWorks}</Link>
         </nav>
 
         <form className="nav-search" onSubmit={handleSearch}>
@@ -33,13 +35,18 @@ export default function StorefrontNav() {
             aria-label="Search assets"
             value={search}
             onChange={(event) => setSearch(event.target.value)}
-            placeholder="Search currency packs"
+            placeholder={t.searchCurrencyPacks}
           />
         </form>
 
-        <button className="cart-trigger" onClick={openCart} aria-label={`Open cart with ${itemCount} items`}>
+        <div className="language-switch" aria-label="Language selector">
+          <button className={locale === "en" ? "is-active" : ""} onClick={() => setLocale("en")} aria-pressed={locale === "en"}>EN</button>
+          <button className={locale === "ru" ? "is-active" : ""} onClick={() => setLocale("ru")} aria-pressed={locale === "ru"}>РУ</button>
+        </div>
+
+        <button className="cart-trigger" onClick={openCart} aria-label={`${t.cart}: ${itemCount}`}>
           <ShoppingBag size={19} />
-          <span className="cart-label">Cart</span>
+          <span className="cart-label">{t.cart}</span>
           {itemCount > 0 && <span className="cart-count">{itemCount}</span>}
         </button>
       </div>
