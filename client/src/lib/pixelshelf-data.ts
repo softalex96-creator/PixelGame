@@ -3,6 +3,8 @@ export const gameFilters = ["All games", "NovaVerse", "Arcane Realms", "Neon Cir
 
 export type Category = (typeof categories)[number];
 export type GameFilter = (typeof gameFilters)[number];
+export type PriceRange = "all" | "budget" | "standard" | "premium";
+export type PriceSort = "featured" | "price-asc" | "price-desc";
 
 export type MarketplaceProduct = {
   id: string;
@@ -184,6 +186,28 @@ export function filterProducts(
     const matchesGame = game === "All games" || product.game === game;
     const searchable = `${product.title} ${product.category} ${product.game} ${product.currency} ${product.bundleLabel} ${product.creator} ${product.description}`.toLowerCase();
     return matchesCategory && matchesGame && (!normalizedQuery || searchable.includes(normalizedQuery));
+  });
+}
+
+export function filterAndSortProducts(
+  productsToFilter: MarketplaceProduct[],
+  category: Category | "All",
+  query: string,
+  game: GameFilter,
+  priceRange: PriceRange,
+  priceSort: PriceSort,
+) {
+  const priceMatched = filterProducts(productsToFilter, category, query, game).filter((product) => {
+    if (priceRange === "budget") return product.price <= 10;
+    if (priceRange === "standard") return product.price > 10 && product.price <= 20;
+    if (priceRange === "premium") return product.price > 20;
+    return true;
+  });
+
+  return [...priceMatched].sort((left, right) => {
+    if (priceSort === "price-asc") return left.price - right.price;
+    if (priceSort === "price-desc") return right.price - left.price;
+    return productsToFilter.indexOf(left) - productsToFilter.indexOf(right);
   });
 }
 

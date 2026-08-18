@@ -1,9 +1,9 @@
 import { useLocalCart } from "@/contexts/LocalCartContext";
 import { getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
 import { useOrders } from "@/contexts/OrdersContext";
-import { canCompleteSimulatedCheckout, resolveCheckoutViewState, toSimulatedOrderLines } from "@/lib/buyer-state";
+import { canCompleteSimulatedCheckout, getPaymentActionState, resolveCheckoutViewState, toSimulatedOrderLines } from "@/lib/buyer-state";
 import { formatPrice } from "@/lib/pixelshelf-data";
-import { CheckCircle2, CreditCard, LockKeyhole, ShoppingBag } from "lucide-react";
+import { CheckCircle2, CreditCard, LoaderCircle, LockKeyhole, ShoppingBag } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { Link, useLocation } from "wouter";
 
@@ -15,20 +15,27 @@ export default function Checkout() {
   const [email, setEmail] = useState("");
   const [playerTag, setPlayerTag] = useState("");
   const [orderId, setOrderId] = useState<string | null>(() => typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("success"));
+  const [isProcessing, setIsProcessing] = useState(false);
   const checkoutView = resolveCheckoutViewState(lines, orders, orderId);
+  const paymentState = getPaymentActionState(canCompleteSimulatedCheckout(lines, email, playerTag), isProcessing);
 
   function completePayment(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!canCompleteSimulatedCheckout(lines, email, playerTag)) return;
-    const createdOrder = createOrder(toSimulatedOrderLines(lines));
-    clearCart();
-    setOrderId(createdOrder.id);
-    navigate(`/checkout?success=${createdOrder.id}`, { replace: true });
+    if (paymentState !== "ready") return;
+    setIsProcessing(true);
+    window.setTimeout(() => {
+      const createdOrder = createOrder(toSimulatedOrderLines(lines));
+      clearCart();
+      setOrderId(createdOrder.id);
+      setIsProcessing(false);
+      navigate(`/checkout?success=${createdOrder.id}`, { replace: true });
+    }, 700);
   }
 
   if (checkoutView.kind === "success") {
     const order = checkoutView.order;
     return <main className="checkout-page"><section className="checkout-success panel-shell">
+      <span className="confetti-layer" aria-hidden="true">{Array.from({ length: 18 }, (_, index) => <i key={index} style={{ "--piece": index } as React.CSSProperties} />)}</span>
       <span className="success-orb"><CheckCircle2 size={30} /></span>
       <p className="eyebrow">{t.paymentSuccessEyebrow}</p>
       <h1>{t.paymentSuccess}</h1>
@@ -57,7 +64,7 @@ export default function Checkout() {
         <label>{t.billingEmail}<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="player@example.com" required /></label>
         <label>{t.playerTag}<input value={playerTag} onChange={(event) => setPlayerTag(event.target.value)} placeholder="NovaRunner#001" required /></label>
         <div className="simulated-method"><CreditCard size={18} /><div><strong>{t.simulatedPayment}</strong><span>{t.simulatedPaymentCopy}</span></div></div>
-        <button className="button button-primary payment-button" type="submit" disabled={!canCompleteSimulatedCheckout(lines, email, playerTag)}>{t.payDemo} · {formatPrice(subtotal)}</button>
+        <button className="button button-primary payment-button" type="submit" disabled={paymentState !== "ready"} aria-busy={isProcessing}>{isProcessing ? <><LoaderCircle className="payment-spinner" size={17} />{t.processingPayment}</> : <>{t.payDemo} · {formatPrice(subtotal)}</>}</button>
       </form>
     </section>
     <aside className="checkout-summary panel-shell">

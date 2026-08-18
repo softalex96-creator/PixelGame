@@ -61,3 +61,9 @@
 - [x] Save and push the completed checkout, account, and GitHub Pages deployment update
 - [x] Add automated tests for checkout empty and success state handling plus buyer account order-history and saved-items state
 - [x] Add direct tests for checkout empty and success-order resolution plus buyer account order-history and saved-items flows
+- [x] Add a payment loading state and accessible confetti celebration after simulated checkout success
+- [x] Add a Repeat order action to buyer order history that rebuilds the local cart and opens checkout
+- [x] Add catalog price range filtering and price sorting controls
+- [x] Create and validate a reusable PixelGame commerce and GitHub Pages workflow skill
+- [x] Add and run tests for payment state, reordering, and price filtering/sorting helpers
+- [ ] Verify the enhanced checkout, account, and catalog on desktop and mobile, then save and deploy the update

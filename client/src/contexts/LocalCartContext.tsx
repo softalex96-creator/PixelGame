@@ -33,6 +33,7 @@ type LocalCartContextValue = {
   openCart: () => void;
   closeCart: () => void;
   clearCart: () => void;
+  replaceItems: (nextLines: CartLine[]) => void;
   completeCheckout: () => void;
   resetCheckout: () => void;
 };
@@ -86,6 +87,11 @@ export function LocalCartProvider({ children }: { children: ReactNode }) {
       openCart: () => setIsCartOpen(true),
       closeCart: () => setIsCartOpen(false),
       clearCart: () => setLines([]),
+      replaceItems: (nextLines) => {
+        setLines(nextLines);
+        setCheckoutComplete(false);
+        setIsCartOpen(false);
+      },
       completeCheckout: () => {
         setLines([]);
         setCheckoutComplete(true);

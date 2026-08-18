@@ -1,4 +1,4 @@
-import { creators, categories, filterProducts, formatPrice, gameFilters, products, type Category, type GameFilter, type MarketplaceProduct } from "@/lib/pixelshelf-data";
+import { creators, categories, filterAndSortProducts, formatPrice, gameFilters, products, type Category, type GameFilter, type MarketplaceProduct, type PriceRange, type PriceSort } from "@/lib/pixelshelf-data";
 import { ArrowRight, ChevronRight, Heart, ShoppingBag, Sparkles } from "lucide-react";
 import { useMemo, useState } from "react";
 import { Link } from "wouter";
@@ -45,12 +45,23 @@ export default function Home() {
   const [game, setGame] = useState<GameFilter>("All games");
   const [query, setQuery] = useState(params.get("search") ?? "");
   const [showSaved, setShowSaved] = useState(params.get("saved") === "true");
+  const [priceRange, setPriceRange] = useState<PriceRange>("all");
+  const [priceSort, setPriceSort] = useState<PriceSort>("featured");
   const { favouriteIds } = useFavourites();
-  const visibleProducts = useMemo(() => filterProducts(products, category, query, game).filter((product) => !showSaved || favouriteIds.includes(product.id)), [category, favouriteIds, game, query, showSaved]);
+  const visibleProducts = useMemo(() => filterAndSortProducts(products, category, query, game, priceRange, priceSort).filter((product) => !showSaved || favouriteIds.includes(product.id)), [category, favouriteIds, game, priceRange, priceSort, query, showSaved]);
   const { locale, t } = useLanguage();
 
   function browseAssets() {
     document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  function resetCatalogControls() {
+    setCategory("All");
+    setGame("All games");
+    setPriceRange("all");
+    setPriceSort("featured");
+    setShowSaved(false);
+    setQuery("");
   }
 
   return (
@@ -107,6 +118,11 @@ export default function Home() {
               </div>
             </div>
             <button className={`saved-filter ${showSaved ? "is-active" : ""}`} onClick={() => setShowSaved((current) => !current)} aria-pressed={showSaved}><Heart size={14} fill={showSaved ? "currentColor" : "none"} /> {showSaved ? t.showAllPacks : t.showSaved}</button>
+            <div className="price-control-row">
+              <label><span>{t.priceRange}</span><select value={priceRange} onChange={(event) => setPriceRange(event.target.value as PriceRange)}><option value="all">{t.allPrices}</option><option value="budget">{t.budgetPrice}</option><option value="standard">{t.standardPrice}</option><option value="premium">{t.premiumPrice}</option></select></label>
+              <label><span>{t.sortBy}</span><select value={priceSort} onChange={(event) => setPriceSort(event.target.value as PriceSort)}><option value="featured">{t.featuredSort}</option><option value="price-asc">{t.lowToHigh}</option><option value="price-desc">{t.highToLow}</option></select></label>
+              <button className="reset-catalog-controls" onClick={resetCatalogControls}>{t.resetFilters}</button>
+            </div>
           </div>
           <span className="result-count">{visibleProducts.length} {t.packs}</span>
         </div>

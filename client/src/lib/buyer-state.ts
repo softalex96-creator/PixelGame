@@ -19,6 +19,18 @@ export function toSimulatedOrderLines(lines: CartLine[]): SimulatedOrderLine[] {
   }));
 }
 
+export function restoreOrderToCart(order: SimulatedOrder, catalog: MarketplaceProduct[] = products): CartLine[] {
+  return order.lines.flatMap((line) => {
+    const product = catalog.find((item) => item.id === line.productId);
+    return product ? [{ product, quantity: line.quantity }] : [];
+  });
+}
+
+export function getPaymentActionState(canSubmit: boolean, isProcessing: boolean) {
+  if (isProcessing) return "processing" as const;
+  return canSubmit ? "ready" as const : "disabled" as const;
+}
+
 export type CheckoutViewState =
   | { kind: "empty" }
   | { kind: "ready" }
