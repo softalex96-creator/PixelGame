@@ -118,6 +118,6 @@
 - [x] Strengthen CRT scanlines and pixel-art hover interactions while preserving reduced-motion support
 - [x] Extend the local cart quantity flow and add a retro confirmation dialog that explicitly confirms only simulated checkout
 - [x] Verify the updated storefront, filtering, cart and confirmation dialog across desktop and mobile, then publish the update
-- [ ] Save a checkpoint for the retro arcade, rarity, and simulated-checkout confirmation update
+- [x] Save a checkpoint for the retro arcade, rarity, and simulated-checkout confirmation update
 - [ ] Push the verified source update to GitHub Pages from main
 - [ ] Verify the published pixelgame.pro storefront after deployment
