@@ -1,0 +1,30 @@
+{
+  "name": "pixelgame-oauth",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-18",
+  "workers_dev": true,
+  "observability": {
+    "enabled": true
+  },
+  "vars": {
+    "PUBLIC_ORIGIN": "https://pixelgame.pro",
+    "AUTH_ORIGIN": "https://auth.pixelgame.pro"
+  },
+  "secrets": {
+    "required": [
+      "SESSION_HMAC_KEY",
+      "GOOGLE_OAUTH_CLIENT_ID",
+      "GOOGLE_OAUTH_CLIENT_SECRET"
+    ]
+  },
+  "ratelimits": [
+    {
+      "name": "OAUTH_RATE_LIMITER",
+      "namespace_id": "84017",
+      "simple": {
+        "limit": 6,
+        "period": 10
+      }
+    }
+  ]
+}

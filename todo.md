@@ -81,3 +81,7 @@
 - [x] Replace the existing Hostinger apex routing only with GitHub Pages’ documented A records after explicit confirmation
 - [ ] Enable and verify GitHub Pages HTTPS enforcement for pixelgame.pro
 - [x] Document that GitHub Pages hosts only the static storefront while secure provider OAuth requires a separate backend
+- [ ] Provision a Cloudflare Workers OAuth backend on auth.pixelgame.pro without exposing provider secrets to GitHub Pages
+- [ ] Configure DNS and HTTPS for auth.pixelgame.pro separately from the GitHub Pages apex records
+- [ ] Implement PKCE, state/nonce validation, exact redirect allowlists, secure cookies, and rate limiting for provider callbacks
+- [ ] Configure Google, Steam, Apple ID, and Telegram credentials in Cloudflare secrets and verify each callback

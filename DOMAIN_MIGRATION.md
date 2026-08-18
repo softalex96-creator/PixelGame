@@ -40,6 +40,18 @@ The DNS cutover was completed with all four GitHub Pages IPv4 records at the ape
 
 The GitHub Actions workflow now builds with a root asset base when `GITHUB_PAGES_CUSTOM_DOMAIN=true`, so production assets resolve at `/assets/...` on `pixelgame.pro` rather than the previous repository path `/PixelGame/assets/...`. The existing hash-based client routing remains in place because GitHub Pages is a static host and needs it for direct navigation to account, checkout, and product routes.
 
+## Planned Cloudflare OAuth backend
+
+The secure OAuth backend will run as a separate Cloudflare Worker at `auth.pixelgame.pro`; GitHub Pages will continue to serve only the public storefront. Cloudflare Workers store provider credentials as encrypted Worker secrets rather than plaintext configuration. A Worker Custom Domain requires an active Cloudflare zone, so `pixelgame.pro` must first be added to Cloudflare and its authoritative nameservers changed at Hostinger before `auth.pixelgame.pro` can become a Cloudflare-managed Custom Domain. The GitHub Pages A and `www` CNAME records must be recreated inside the Cloudflare zone before the nameserver cutover, preserving the storefront while Cloudflare adds the Worker hostname and its certificate. [1] [2] [3]
+
+Cloudflare imported the expected five storefront records: four apex A records and one `www` CNAME. Before activation, every imported GitHub Pages record must be switched to **DNS only** (gray cloud), not proxied. GitHub Pages needs its documented A/CNAME responses visible for custom-domain and certificate validation; proxying the records would hide that routing and risk breaking issuance. A future `auth` Worker hostname may be proxied only after it is attached to the Worker as a Cloudflare Custom Domain.
+
+### References
+
+[1] [Cloudflare Workers — Secrets](https://developers.cloudflare.com/workers/configuration/secrets/)
+[2] [Cloudflare Workers — Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
+[3] [Cloudflare Workers — Routes and Domains](https://developers.cloudflare.com/workers/configuration/routing/)
+
 ## Rollback
 
 If the custom domain stops serving PixelGame, restore the previous apex record and `www` record exactly as captured before cutover. Do not alter email records as part of rollback. Disable any new OAuth redirect URI that is no longer served by HTTPS.
