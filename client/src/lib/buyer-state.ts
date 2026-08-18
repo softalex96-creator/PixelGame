@@ -42,12 +42,20 @@ export function resolveCheckoutViewState(lines: CartLine[], orders: SimulatedOrd
   return lines.length ? { kind: "ready" } : { kind: "empty" };
 }
 
-export function getBuyerAccountState(orders: SimulatedOrder[], favouriteIds: string[], catalog: MarketplaceProduct[] = products) {
+export function getBuyerAccountState(
+  orders: SimulatedOrder[],
+  favouriteIds: string[],
+  catalog: MarketplaceProduct[] = products,
+  pendingCartLines: CartLine[] = [],
+) {
   const savedProducts = catalog.filter((product) => favouriteIds.includes(product.id));
   return {
     orderCount: orders.length,
+    pendingCartLines,
+    pendingItemCount: pendingCartLines.reduce((total, line) => total + line.quantity, 0),
     savedProducts,
     hasOrderHistory: orders.length > 0,
+    hasPendingCart: pendingCartLines.length > 0,
     hasSavedItems: savedProducts.length > 0,
   };
 }

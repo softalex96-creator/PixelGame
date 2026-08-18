@@ -66,4 +66,14 @@
 - [x] Add catalog price range filtering and price sorting controls
 - [x] Create and validate a reusable PixelGame commerce and GitHub Pages workflow skill
 - [x] Add and run tests for payment state, reordering, and price filtering/sorting helpers
-- [ ] Verify the enhanced checkout, account, and catalog on desktop and mobile, then save and deploy the update
+- [x] Verify the enhanced checkout, account, and catalog on desktop and mobile, then save and deploy the update
+- [x] Diagnose and fix the mismatch where cart additions are not reflected as orders in the buyer account
+- [x] Add a persistent RUB, EUR, and USD currency selector with localized price formatting across catalog, cart, checkout, and account
+- [ ] Add a buyer sign-in surface for Google, Steam, Apple ID, and Telegram, with secure provider configuration requirements documented
+- [ ] Add and run automated coverage for order visibility, currency selection, and sign-in provider state
+- [ ] Verify the new account, currency, and order flows across desktop and mobile, then save and deploy the update
+- [ ] Configure each approved external sign-in provider through the user-authorized developer account sessions and securely register the resulting credentials
+- [ ] Prepare a secure production deployment configuration with server-side OAuth callbacks and HTTPS-only session controls
+- [ ] Attach and verify the custom domain pixelgame.pro after explicit approval of DNS changes
+- [ ] Add production redirect URIs for Google, Steam, Apple ID, and Telegram only after the custom domain has verified TLS
+- [ ] Perform a security review covering secret isolation, OAuth callback validation, allowed origins, session cookies, and rate limits

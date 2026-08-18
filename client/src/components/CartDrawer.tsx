@@ -1,5 +1,6 @@
 import { useLocalCart } from "@/contexts/LocalCartContext";
 import { getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { formatPrice } from "@/lib/pixelshelf-data";
 import { Minus, Plus, ShoppingBag, Trash2, X } from "lucide-react";
 import { useLocation } from "wouter";
@@ -14,6 +15,7 @@ export default function CartDrawer() {
     removeItem,
   } = useLocalCart();
   const { locale, t } = useLanguage();
+  const { currency } = useCurrency();
   const [, navigate] = useLocation();
 
   return (
@@ -50,7 +52,7 @@ export default function CartDrawer() {
                   <div className="cart-line-content">
                     <p className="cart-line-category">{localizedProduct.game}</p>
                     <h3>{localizedProduct.title}</h3>
-                    <p className="cart-line-price">{formatPrice(localizedProduct.price)}</p>
+                    <p className="cart-line-price">{formatPrice(localizedProduct.price, currency)}</p>
                     <div className="quantity-row">
                       <div className="quantity-control" aria-label={localizedProduct.title}>
                         <button onClick={() => updateQuantity(product.id, quantity - 1)} aria-label={t.decrease}><Minus size={14} /></button>
@@ -64,7 +66,7 @@ export default function CartDrawer() {
               })}
             </div>
             <div className="cart-summary">
-              <div><span>{t.subtotal}</span><strong>{formatPrice(subtotal)}</strong></div>
+              <div><span>{t.subtotal}</span><strong>{formatPrice(subtotal, currency)}</strong></div>
               <p>{t.cartNote}</p>
               <button className="button button-primary checkout-button" onClick={() => { closeCart(); navigate("/checkout"); }}>{t.continueTopUp}</button>
             </div>

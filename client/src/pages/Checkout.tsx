@@ -1,6 +1,7 @@
 import { useLocalCart } from "@/contexts/LocalCartContext";
 import { getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
 import { useOrders } from "@/contexts/OrdersContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { canCompleteSimulatedCheckout, getPaymentActionState, resolveCheckoutViewState, toSimulatedOrderLines } from "@/lib/buyer-state";
 import { formatPrice } from "@/lib/pixelshelf-data";
 import { CheckCircle2, CreditCard, LoaderCircle, LockKeyhole, ShoppingBag } from "lucide-react";
@@ -12,6 +13,7 @@ export default function Checkout() {
   const { lines, subtotal, clearCart } = useLocalCart();
   const { createOrder, orders } = useOrders();
   const { locale, t } = useLanguage();
+  const { currency } = useCurrency();
   const [email, setEmail] = useState("");
   const [playerTag, setPlayerTag] = useState("");
   const [orderId, setOrderId] = useState<string | null>(() => typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("success"));
@@ -40,7 +42,7 @@ export default function Checkout() {
       <p className="eyebrow">{t.paymentSuccessEyebrow}</p>
       <h1>{t.paymentSuccess}</h1>
       <p>{t.paymentSuccessCopy}</p>
-      <div className="success-order-meta"><span>{t.orderNumber}</span><strong>{order.id}</strong><span>{formatPrice(order.total)}</span></div>
+      <div className="success-order-meta"><span>{t.orderNumber}</span><strong>{order.id}</strong><span>{formatPrice(order.total, currency)}</span></div>
       <div className="success-actions"><Link href="/account" className="button button-primary">{t.viewAccount}</Link><Link href="/#catalog" className="button button-outline">{t.keepBrowsing}</Link></div>
     </section></main>;
   }
@@ -64,7 +66,7 @@ export default function Checkout() {
         <label>{t.billingEmail}<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="player@example.com" required /></label>
         <label>{t.playerTag}<input value={playerTag} onChange={(event) => setPlayerTag(event.target.value)} placeholder="NovaRunner#001" required /></label>
         <div className="simulated-method"><CreditCard size={18} /><div><strong>{t.simulatedPayment}</strong><span>{t.simulatedPaymentCopy}</span></div></div>
-        <button className="button button-primary payment-button" type="submit" disabled={paymentState !== "ready"} aria-busy={isProcessing}>{isProcessing ? <><LoaderCircle className="payment-spinner" size={17} />{t.processingPayment}</> : <>{t.payDemo} · {formatPrice(subtotal)}</>}</button>
+        <button className="button button-primary payment-button" type="submit" disabled={paymentState !== "ready"} aria-busy={isProcessing}>{isProcessing ? <><LoaderCircle className="payment-spinner" size={17} />{t.processingPayment}</> : <>{t.payDemo} · {formatPrice(subtotal, currency)}</>}</button>
       </form>
     </section>
     <aside className="checkout-summary panel-shell">
@@ -72,9 +74,9 @@ export default function Checkout() {
       <h2>{t.yourTopUp}</h2>
       <div className="checkout-lines">{lines.map(({ product, quantity }) => {
         const localized = getLocalizedProduct(product, locale);
-        return <article key={product.id}><img src={localized.image} alt="" /><div><strong>{localized.title}</strong><span>{localized.game} · {localized.bundleLabel}</span><small>× {quantity}</small></div><b>{formatPrice(localized.price * quantity)}</b></article>;
+        return <article key={product.id}><img src={localized.image} alt="" /><div><strong>{localized.title}</strong><span>{localized.game} · {localized.bundleLabel}</span><small>× {quantity}</small></div><b>{formatPrice(localized.price * quantity, currency)}</b></article>;
       })}</div>
-      <div className="checkout-total"><span>{t.subtotal}</span><strong>{formatPrice(subtotal)}</strong></div>
+      <div className="checkout-total"><span>{t.subtotal}</span><strong>{formatPrice(subtotal, currency)}</strong></div>
     </aside>
   </div></main>;
 }

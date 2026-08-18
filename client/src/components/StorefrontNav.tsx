@@ -2,6 +2,7 @@ import { useLocalCart } from "@/contexts/LocalCartContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useFavourites } from "@/contexts/FavouritesContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import SearchAutocomplete from "@/components/SearchAutocomplete";
 import { Heart, Moon, ShoppingBag, Sparkles, Sun, UserRound } from "lucide-react";
 import { useState } from "react";
@@ -14,6 +15,7 @@ export default function StorefrontNav() {
   const { favouriteCount } = useFavourites();
   const { theme, toggleTheme } = useTheme();
   const { locale, setLocale, t } = useLanguage();
+  const { currency, setCurrency } = useCurrency();
 
   function handleSearch() {
     navigate(`/?search=${encodeURIComponent(search)}#catalog`);
@@ -46,6 +48,10 @@ export default function StorefrontNav() {
         <div className="language-switch" aria-label="Language selector">
           <button className={locale === "en" ? "is-active" : ""} onClick={() => setLocale("en")} aria-pressed={locale === "en"}>EN</button>
           <button className={locale === "ru" ? "is-active" : ""} onClick={() => setLocale("ru")} aria-pressed={locale === "ru"}>РУ</button>
+        </div>
+
+        <div className="currency-switch" aria-label={t.currencyLabel}>
+          {(["USD", "EUR", "RUB"] as const).map((option) => <button key={option} className={currency === option ? "is-active" : ""} onClick={() => setCurrency(option)} aria-pressed={currency === option}>{option}</button>)}
         </div>
 
         <button className="theme-toggle" onClick={toggleTheme} aria-label={theme === "dark" ? t.themeLight : t.themeDark} title={theme === "dark" ? t.themeLight : t.themeDark} aria-pressed={theme === "dark"}>

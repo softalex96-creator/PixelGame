@@ -1,6 +1,7 @@
 import { useLocalCart } from "@/contexts/LocalCartContext";
 import { useFavourites } from "@/contexts/FavouritesContext";
 import { getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import { formatPrice, getProductBySlug } from "@/lib/pixelshelf-data";
 import { ArrowLeft, Check, Download, Heart, ShoppingBag, Sparkles } from "lucide-react";
 import { Link, useRoute } from "wouter";
@@ -11,6 +12,7 @@ export default function ProductDetail() {
   const { addItem, openCart } = useLocalCart();
   const { isFavourite, toggleFavourite } = useFavourites();
   const { locale, t } = useLanguage();
+  const { currency } = useCurrency();
 
   if (!product) {
     return (
@@ -50,7 +52,7 @@ export default function ProductDetail() {
             <h1>{asset.title}</h1>
             <p className="creator-line"><span className={`creator-dot accent-${asset.accent}`}>{asset.creatorInitials}</span> {asset.bundleLabel} · {asset.delivery}</p>
             <p className="detail-description">{asset.longDescription}</p>
-            <div className="detail-price">{formatPrice(asset.price)} <span>{t.virtualCurrencyBundle}</span></div>
+            <div className="detail-price">{formatPrice(asset.price, currency)} <span>{t.virtualCurrencyBundle}</span></div>
             <div className="detail-actions">
               <button className="button button-primary instant-button" onClick={addToCart}><Download size={18} /> {t.instantDownload}</button>
               <button className="button button-outline" onClick={buyNow}><ShoppingBag size={17} /> {t.addToTopUp}</button>

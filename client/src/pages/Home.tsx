@@ -5,12 +5,14 @@ import { Link } from "wouter";
 import { useLocalCart } from "@/contexts/LocalCartContext";
 import { getLocalizedCategory, getLocalizedCreatorRole, getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
 import { useFavourites } from "@/contexts/FavouritesContext";
+import { useCurrency } from "@/contexts/CurrencyContext";
 import SearchAutocomplete from "@/components/SearchAutocomplete";
 
 function ProductCard({ product }: { product: MarketplaceProduct }) {
   const { addItem } = useLocalCart();
   const { isFavourite, toggleFavourite } = useFavourites();
   const { locale, t } = useLanguage();
+  const { currency } = useCurrency();
   const asset = getLocalizedProduct(product, locale);
   return (
     <article className={`product-card accent-${asset.accent}`}>
@@ -25,7 +27,7 @@ function ProductCard({ product }: { product: MarketplaceProduct }) {
         <p className="creator-small"><span>{asset.creatorInitials}</span>{asset.game}</p>
         <div className="product-title-row">
           <Link href={`/product/${asset.slug}`}><h3>{asset.title}</h3></Link>
-          <span>{formatPrice(asset.price)}</span>
+          <span>{formatPrice(asset.price, currency)}</span>
         </div>
         <p className="product-description"><strong>{asset.bundleLabel}</strong> · {asset.description}</p>
         <div className="product-card-actions">

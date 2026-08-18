@@ -5,6 +5,13 @@ export type Category = (typeof categories)[number];
 export type GameFilter = (typeof gameFilters)[number];
 export type PriceRange = "all" | "budget" | "standard" | "premium";
 export type PriceSort = "featured" | "price-asc" | "price-desc";
+export type DisplayCurrency = "USD" | "EUR" | "RUB";
+
+export const displayCurrencyRates: Record<DisplayCurrency, number> = {
+  USD: 1,
+  EUR: 0.92,
+  RUB: 91,
+};
 
 export type MarketplaceProduct = {
   id: string;
@@ -234,6 +241,12 @@ export function getSearchSuggestions(query: string, limit = 5): SearchSuggestion
     .slice(0, limit);
 }
 
-export function formatPrice(price: number) {
-  return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 }).format(price);
+export function formatPrice(price: number, currency: DisplayCurrency = "USD") {
+  const locale = currency === "RUB" ? "ru-RU" : currency === "EUR" ? "de-DE" : "en-US";
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency,
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(price * displayCurrencyRates[currency]);
 }

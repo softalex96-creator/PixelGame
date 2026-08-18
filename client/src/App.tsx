@@ -6,6 +6,7 @@ import { LocalCartProvider } from "@/contexts/LocalCartContext";
 import { FavouritesProvider } from "@/contexts/FavouritesContext";
 import { OrdersProvider } from "@/contexts/OrdersContext";
 import { LanguageProvider } from "@/contexts/LanguageContext";
+import { CurrencyProvider } from "@/contexts/CurrencyContext";
 import { useLanguage } from "@/contexts/LanguageContext";
 import NotFound from "@/pages/NotFound";
 import Home from "@/pages/Home";
@@ -42,14 +43,16 @@ function AppContent() {
       <ThemeProvider defaultTheme="dark">
         <TooltipProvider>
           <LanguageProvider>
-            <FavouritesProvider>
-              <OrdersProvider>
-                <LocalCartProvider>
-                  <Toaster />
-                <StorefrontRoutes />
-                </LocalCartProvider>
-              </OrdersProvider>
-            </FavouritesProvider>
+            <CurrencyProvider>
+              <FavouritesProvider>
+                <OrdersProvider>
+                  <LocalCartProvider>
+                    <Toaster />
+                    <StorefrontRoutes />
+                  </LocalCartProvider>
+                </OrdersProvider>
+              </FavouritesProvider>
+            </CurrencyProvider>
           </LanguageProvider>
         </TooltipProvider>
       </ThemeProvider>
