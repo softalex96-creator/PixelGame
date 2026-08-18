@@ -58,6 +58,6 @@
 - [x] Configure GitHub Pages for automatic deployment from the GitHub main branch
 - [x] Add and run tests for simulated order creation, checkout state, and account history
 - [x] Verify responsive checkout and account experiences, including public deployed success, order-history, and favourites states
-- [ ] Save and push the completed checkout, account, and GitHub Pages deployment update
+- [x] Save and push the completed checkout, account, and GitHub Pages deployment update
 - [x] Add automated tests for checkout empty and success state handling plus buyer account order-history and saved-items state
 - [x] Add direct tests for checkout empty and success-order resolution plus buyer account order-history and saved-items flows
