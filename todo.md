@@ -39,5 +39,8 @@
 - [x] Create and validate a reusable skill that captures this storefront workflow
 - [x] Add and run automated coverage for theme, favourites, and autocomplete helpers
 - [x] Verify the enhanced storefront in both themes at desktop and mobile viewports
-- [ ] Save a review checkpoint for the verified enhanced storefront
+- [x] Save a review checkpoint for the verified enhanced storefront
 - [x] Verify cart drawer, favourites controls, autocomplete panel, and product detail in both themes across desktop and mobile
+- [x] Fix the light-theme header cart label so it remains visible against the light navigation background
+- [x] Verify cart-label contrast in both themes
+- [ ] Save the corrected storefront checkpoint
