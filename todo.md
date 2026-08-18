@@ -120,7 +120,7 @@
 - [x] Verify the updated storefront, filtering, cart and confirmation dialog across desktop and mobile, then publish the update
 - [x] Save a checkpoint for the retro arcade, rarity, and simulated-checkout confirmation update
 - [x] Push the verified source update to GitHub Pages from main
-- [ ] Verify the published pixelgame.pro storefront after deployment
+- [x] Verify the published pixelgame.pro storefront after deployment
 - [x] Fix the GitHub Pages hash-route duplication in the catalogue navigation and re-verify production routing
 - [x] Save a checkpoint for the GitHub Pages section-navigation correction
-- [ ] Push the section-navigation correction to GitHub Pages main
+- [x] Push the section-navigation correction to GitHub Pages main

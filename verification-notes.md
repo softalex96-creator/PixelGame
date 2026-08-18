@@ -9,3 +9,5 @@
 ## Production routing observation — 2026-08-18
 
 The freshly deployed root page at `https://pixelgame.pro/` renders the Russian retro arcade hero and original pixel-alien screen. During production navigation, the catalogue link resolved to `https://pixelgame.pro/#/#catalog` and showed the app’s 404 state. The duplicated hash must be corrected before the production update can be accepted as complete.
+
+After the section-navigation correction was deployed, the same live catalogue link retained `https://pixelgame.pro/` rather than creating `#/#catalog`; the storefront remained on the home route and no 404 state appeared.
