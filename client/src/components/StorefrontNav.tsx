@@ -4,6 +4,7 @@ import { useFavourites } from "@/contexts/FavouritesContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import SearchAutocomplete from "@/components/SearchAutocomplete";
+import { applyHomeSectionState, HomeSectionLink, queuePendingHomeSectionState } from "@/components/HomeSectionLink";
 import { Heart, Moon, ShoppingBag, Sparkles, Sun, UserRound } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
@@ -18,7 +19,16 @@ export default function StorefrontNav() {
   const { currency, setCurrency } = useCurrency();
 
   function handleSearch() {
-    navigate(`/?search=${encodeURIComponent(search)}#catalog`);
+    const state = { query: search };
+    const section = document.getElementById("catalog");
+    if (section) {
+      applyHomeSectionState(state);
+      section.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+    queuePendingHomeSectionState(state);
+    navigate("/");
+    window.setTimeout(() => document.getElementById("catalog")?.scrollIntoView({ behavior: "smooth" }), 90);
   }
 
   return (
@@ -30,9 +40,9 @@ export default function StorefrontNav() {
         </Link>
 
         <nav className="desktop-nav" aria-label="Marketplace navigation">
-          <Link href="/#catalog">{t.games}</Link>
-          <Link href="/#catalog">{t.currencyPacks}</Link>
-          <Link href="/#how-it-works">{t.howItWorks}</Link>
+          <HomeSectionLink sectionId="catalog">{t.games}</HomeSectionLink>
+          <HomeSectionLink sectionId="catalog">{t.currencyPacks}</HomeSectionLink>
+          <HomeSectionLink sectionId="how-it-works">{t.howItWorks}</HomeSectionLink>
         </nav>
 
         <SearchAutocomplete
@@ -59,10 +69,10 @@ export default function StorefrontNav() {
           <span className="theme-label">{theme === "dark" ? t.themeLight : t.themeDark}</span>
         </button>
 
-        <Link href="/?saved=true#catalog" className="favourites-trigger" aria-label={`${t.savedBundles}: ${favouriteCount}`}>
+        <HomeSectionLink sectionId="catalog" pendingState={{ showSaved: true }} className="favourites-trigger" aria-label={`${t.savedBundles}: ${favouriteCount}`}>
           <Heart size={18} fill={favouriteCount > 0 ? "currentColor" : "none"} />
           {favouriteCount > 0 && <span className="favourites-count">{favouriteCount}</span>}
-        </Link>
+        </HomeSectionLink>
 
         <Link href="/account" className="account-trigger" aria-label={t.account}>
           <UserRound size={18} /><span>{t.account}</span>

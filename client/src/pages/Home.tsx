@@ -1,12 +1,13 @@
 import { categories, creators, filterAndSortProducts, formatPrice, gameFilters, products, rarityFilters, type Category, type GameFilter, type MarketplaceProduct, type PriceRange, type PriceSort, type Rarity } from "@/lib/pixelshelf-data";
 import { ArrowRight, BookOpen, Gamepad2, Heart, MonitorCog, ShieldCheck, ShoppingBag, Sparkles, Wand2, Zap } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "wouter";
 import { useLocalCart } from "@/contexts/LocalCartContext";
 import { getLocalizedCategory, getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
 import { useFavourites } from "@/contexts/FavouritesContext";
 import { useCurrency } from "@/contexts/CurrencyContext";
 import SearchAutocomplete from "@/components/SearchAutocomplete";
+import { consumePendingHomeSectionState, homeSectionStateEvent, type PendingHomeSectionState } from "@/components/HomeSectionLink";
 
 const arcadeIcons: Record<Category, typeof Zap> = { Currency: Zap, Skins: Wand2, Mods: MonitorCog, Guides: BookOpen };
 
@@ -37,13 +38,14 @@ function ProductCard({ product }: { product: MarketplaceProduct }) {
 
 export default function Home() {
   const params = new URLSearchParams(window.location.search);
+  const [pendingSectionState] = useState(consumePendingHomeSectionState);
   const requestedCategory = params.get("category");
   const initialCategory = categories.includes(requestedCategory as Category) ? (requestedCategory as Category) : "All";
   const [category, setCategory] = useState<Category | "All">(initialCategory);
   const [arcadeLane, setArcadeLane] = useState<Category>(initialCategory === "All" ? "Currency" : initialCategory);
   const [game, setGame] = useState<GameFilter>("All games");
-  const [query, setQuery] = useState(params.get("search") ?? "");
-  const [showSaved, setShowSaved] = useState(params.get("saved") === "true");
+  const [query, setQuery] = useState(params.get("search") ?? pendingSectionState?.query ?? "");
+  const [showSaved, setShowSaved] = useState(params.get("saved") === "true" || pendingSectionState?.showSaved === true);
   const [priceRange, setPriceRange] = useState<PriceRange>("all");
   const [priceSort, setPriceSort] = useState<PriceSort>("featured");
   const [rarity, setRarity] = useState<Rarity | "All rarity">("All rarity");
@@ -51,6 +53,15 @@ export default function Home() {
   const { addItem } = useLocalCart();
   const { locale } = useLanguage();
   const { currency } = useCurrency();
+  useEffect(() => {
+    const applyPendingState = (event: Event) => {
+      const state = (event as CustomEvent<PendingHomeSectionState>).detail;
+      if (typeof state?.query === "string") setQuery(state.query);
+      if (state?.showSaved) setShowSaved(true);
+    };
+    window.addEventListener(homeSectionStateEvent, applyPendingState);
+    return () => window.removeEventListener(homeSectionStateEvent, applyPendingState);
+  }, []);
   const localized = locale === "ru";
   const copy = localized ? {
     heroKicker: "PIXELGAME / РЕЖИМ АРКАДЫ", hero: "Ваша следующая", accent: "находка загружена.", description: "Вымышленные игровые товары в стиле аркад 80-х: валюта, скины, моды и гайды. Только локальная демонстрация — без реальной оплаты.", deck: "ВСТАВЬТЕ МОНЕТУ", deckTitle: "Выберите режим витрины.", deckNote: "Каждая кнопка открывает свою линию товаров.", featured: "ГОРЯЧАЯ ПОЛКА", featuredTitle: "Выбор игрового автомата", catalog: "ХРАНИЛИЩЕ КАРТРИДЖЕЙ", catalogTitle: "Весь каталог", catalogDesc: "Фильтруйте оригинальные товары по миру, типу и цене.", saved: "Сохранённое", all: "Все товары", inspect: "Открыть", add: "Добавить", local: "Локальная симуляция", how: "КАК ЭТО РАБОТАЕТ", stepTitle: "Три хода до локального заказа", footer: "PixelGame / 1986 mode / local preview only" } : {
@@ -85,6 +96,6 @@ export default function Home() {
 
     <section id="catalog" className="retro-catalog-section container"><div className="retro-section-heading"><div><p className="retro-kicker">{copy.catalog}</p><h2>{copy.catalogTitle}</h2></div><p>{copy.catalogDesc}</p></div><div className="retro-catalog-controls"><div className="retro-filter-block"><span>{localized ? "МИР" : "WORLD"}</span><div className="filter-row game-filter-row">{gameFilters.map((item) => <button key={item} className={game === item ? "is-active" : ""} onClick={() => setGame(item)}>{item === "All games" ? localized ? "Все" : "All" : item}</button>)}</div></div><div className="retro-filter-block"><span>{localized ? "ТИП" : "TYPE"}</span><div className="filter-row">{(["All", ...categories] as const).map((item) => <button key={item} className={category === item ? "is-active" : ""} onClick={() => setCategory(item)}>{item === "All" ? copy.all : getLocalizedCategory(item, locale)}</button>)}</div></div><div className="retro-filter-block"><span>{localized ? "РЕДКОСТЬ" : "RARITY"}</span><div className="filter-row rarity-filter-row">{rarityFilters.map((item) => <button key={item} className={`${rarity === item ? "is-active" : ""} rarity-control-${item.toLowerCase().replace(" ", "-")}`} onClick={() => setRarity(item)}>{item === "All rarity" ? localized ? "Все" : "All" : localized ? ({ Common: "Обыч.", Uncommon: "Необыч.", Rare: "Редкий", Epic: "Эпич.", Legendary: "Легенд." } as Record<Rarity, string>)[item] : item}</button>)}</div></div><div className="retro-filter-block retro-filter-actions"><button className={`saved-filter ${showSaved ? "is-active" : ""}`} onClick={() => setShowSaved((current) => !current)}><Heart size={14} fill={showSaved ? "currentColor" : "none"} /> {copy.saved}</button><label><span>{localized ? "ЦЕНА" : "PRICE"}</span><select value={priceRange} onChange={(event) => setPriceRange(event.target.value as PriceRange)}><option value="all">{localized ? "Любая" : "Any"}</option><option value="budget">{localized ? "До $8" : "Up to $8"}</option><option value="standard">{localized ? "$9–14" : "$9–14"}</option><option value="premium">{localized ? "От $15" : "$15+"}</option></select></label><label><span>{localized ? "СОРТ." : "SORT"}</span><select value={priceSort} onChange={(event) => setPriceSort(event.target.value as PriceSort)}><option value="featured">{localized ? "Выбор" : "Featured"}</option><option value="price-asc">{localized ? "Дешевле" : "Low to high"}</option><option value="price-desc">{localized ? "Дороже" : "High to low"}</option></select></label><button className="reset-catalog-controls" onClick={resetControls}>{localized ? "Сброс" : "Reset"}</button></div></div><div className="retro-result-line"><span>{visibleProducts.length} {localized ? "товаров в автомате" : "items in the cabinet"}</span></div>{visibleProducts.length ? <div className="product-grid retro-product-grid">{visibleProducts.map((product) => <ProductCard key={product.id} product={product} />)}</div> : <div className="catalog-empty"><Sparkles size={22} /><h3>{localized ? "В этой ячейке пока пусто" : "This cabinet slot is empty"}</h3><p>{localized ? "Сбросьте фильтры или попробуйте другой мир." : "Reset filters or choose another world."}</p></div>}</section>
 
-    <section className="retro-how-section"><div className="container"><div className="retro-section-heading"><div><p className="retro-kicker">{copy.how}</p><h2>{copy.stepTitle}</h2></div></div><div className="retro-steps"><article><b>01</b><h3>{localized ? "Выберите режим" : "Choose a lane"}</h3><p>{localized ? "Валюта, скины, моды или гайды — всё разложено по отдельным слотам." : "Currency, skins, mods and guides each keep a separate arcade slot."}</p></article><article><b>02</b><h3>{localized ? "Проверьте картридж" : "Inspect the cartridge"}</h3><p>{localized ? "Карточка показывает тип, мир, формат и цену до добавления в корзину." : "Every card shows its type, world, format and price before it reaches cart."}</p></article><article><b>03</b><h3>{localized ? "Оформите локально" : "Checkout locally"}</h3><p>{localized ? "Корзина и заказ работают только как прозрачная симуляция." : "Cart and checkout remain a transparent local simulation."}</p></article></div></div></section>
+    <section id="how-it-works" className="retro-how-section"><div className="container"><div className="retro-section-heading"><div><p className="retro-kicker">{copy.how}</p><h2>{copy.stepTitle}</h2></div></div><div className="retro-steps"><article><b>01</b><h3>{localized ? "Выберите режим" : "Choose a lane"}</h3><p>{localized ? "Валюта, скины, моды или гайды — всё разложено по отдельным слотам." : "Currency, skins, mods and guides each keep a separate arcade slot."}</p></article><article><b>02</b><h3>{localized ? "Проверьте картридж" : "Inspect the cartridge"}</h3><p>{localized ? "Карточка показывает тип, мир, формат и цену до добавления в корзину." : "Every card shows its type, world, format and price before it reaches cart."}</p></article><article><b>03</b><h3>{localized ? "Оформите локально" : "Checkout locally"}</h3><p>{localized ? "Корзина и заказ работают только как прозрачная симуляция." : "Cart and checkout remain a transparent local simulation."}</p></article></div></div></section>
   </div>;
 }

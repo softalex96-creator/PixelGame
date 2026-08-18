@@ -16,6 +16,11 @@ async function verifyViewport(browser, { name, viewport }) {
   page.setDefaultTimeout(15_000);
 
   await page.goto(route("/"), { waitUntil: "networkidle" });
+  if (name === "desktop") {
+    await page.locator(".desktop-nav a").nth(1).click();
+    await page.locator("#catalog").waitFor();
+    assert.equal(new URL(page.url()).hash.includes("#/#"), false, `${name}: production section navigation must never create a double hash route`);
+  }
   await page.getByRole("button", { name: "RUB", exact: true }).click();
   await page.waitForFunction(() => window.localStorage.getItem("pixelgame:display-currency") === "RUB");
 

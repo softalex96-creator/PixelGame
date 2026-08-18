@@ -9,6 +9,7 @@ import { useCurrency } from "@/contexts/CurrencyContext";
 import { useAuth } from "@/contexts/AuthContext";
 import { Apple, CheckCircle2, Chrome, Heart, LoaderCircle, LogOut, PackageOpen, RotateCcw, Send, ShieldCheck, ShoppingBag } from "lucide-react";
 import { Link, useLocation } from "wouter";
+import { HomeSectionLink } from "@/components/HomeSectionLink";
 
 export default function Account() {
   const { orders } = useOrders();
@@ -41,11 +42,11 @@ export default function Account() {
         <div className="order-card-head"><div><span className="status-pill"><CheckCircle2 size={13} />{t.paidSimulated}</span><h3>{order.id}</h3><p>{new Date(order.createdAt).toLocaleDateString(locale === "ru" ? "ru-RU" : "en-US", { day: "numeric", month: "short", year: "numeric" })}</p></div><strong>{formatPrice(order.total, currency)}</strong></div>
         <div className="order-items">{order.lines.map((line) => <div key={`${order.id}:${line.productId}`}><img src={line.image} alt="" /><span>{line.game} · {line.title} <small>× {line.quantity}</small></span><b>{formatPrice(line.unitPrice * line.quantity, currency)}</b></div>)}</div>
         <div className="order-card-actions"><button className="button button-outline repeat-order-button" onClick={() => repeatOrder(order)} disabled={!restoreOrderToCart(order).length}><RotateCcw size={15} />{t.repeatOrder}</button></div>
-      </article>)}</div> : <div className="account-empty panel-shell"><span className="empty-icon"><PackageOpen size={26} /></span><h3>{t.noOrders}</h3><p>{t.noOrdersCopy}</p><Link href="/#catalog" className="button button-outline">{t.explorePacks}</Link></div>}
+      </article>)}</div> : <div className="account-empty panel-shell"><span className="empty-icon"><PackageOpen size={26} /></span><h3>{t.noOrders}</h3><p>{t.noOrdersCopy}</p><HomeSectionLink sectionId="catalog" className="button button-outline">{t.explorePacks}</HomeSectionLink></div>}
     </section>
-    <section className="account-section"><div className="section-heading"><div><p className="eyebrow">{t.savedForLaterEyebrow}</p><h2>{t.savedForLater}</h2></div><Link href="/?saved=true#catalog" className="view-link">{t.showSaved} →</Link></div>
-      {buyerState.hasSavedItems ? <div className="saved-account-grid">{savedProducts.map((product) => <Link href={`/product/${product.slug}`} className="saved-account-card" key={product.id}><img src={product.image} alt="" /><span><small>{product.game}</small><strong>{product.title}</strong><em>{formatPrice(product.price, currency)}</em></span></Link>)}</div> : <div className="account-empty panel-shell"><span className="empty-icon"><Heart size={26} /></span><h3>{t.noSavedBundles}</h3><p>{t.noSavedBundlesCopy}</p><Link href="/#catalog" className="button button-outline">{t.explorePacks}</Link></div>}
+    <section className="account-section"><div className="section-heading"><div><p className="eyebrow">{t.savedForLaterEyebrow}</p><h2>{t.savedForLater}</h2></div><HomeSectionLink sectionId="catalog" pendingState={{ showSaved: true }} className="view-link">{t.showSaved} →</HomeSectionLink></div>
+      {buyerState.hasSavedItems ? <div className="saved-account-grid">{savedProducts.map((product) => <Link href={`/product/${product.slug}`} className="saved-account-card" key={product.id}><img src={product.image} alt="" /><span><small>{product.game}</small><strong>{product.title}</strong><em>{formatPrice(product.price, currency)}</em></span></Link>)}</div> : <div className="account-empty panel-shell"><span className="empty-icon"><Heart size={26} /></span><h3>{t.noSavedBundles}</h3><p>{t.noSavedBundlesCopy}</p><HomeSectionLink sectionId="catalog" className="button button-outline">{t.explorePacks}</HomeSectionLink></div>}
     </section>
-    <Link href="/#catalog" className="account-browse-link"><ShoppingBag size={17} />{t.browseCurrencyPacks}</Link>
+    <HomeSectionLink sectionId="catalog" className="account-browse-link"><ShoppingBag size={17} />{t.browseCurrencyPacks}</HomeSectionLink>
   </div></main>;
 }

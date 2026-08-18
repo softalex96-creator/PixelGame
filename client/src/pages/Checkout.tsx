@@ -7,6 +7,7 @@ import { formatPrice } from "@/lib/pixelshelf-data";
 import { CheckCircle2, CreditCard, LoaderCircle, LockKeyhole, ShoppingBag } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { Link, useLocation } from "wouter";
+import { HomeSectionLink } from "@/components/HomeSectionLink";
 
 export default function Checkout() {
   const [, navigate] = useLocation();
@@ -43,7 +44,7 @@ export default function Checkout() {
       <h1>{t.paymentSuccess}</h1>
       <p>{t.paymentSuccessCopy}</p>
       <div className="success-order-meta"><span>{t.orderNumber}</span><strong>{order.id}</strong><span>{formatPrice(order.total, currency)}</span></div>
-      <div className="success-actions"><Link href="/account" className="button button-primary">{t.viewAccount}</Link><Link href="/#catalog" className="button button-outline">{t.keepBrowsing}</Link></div>
+      <div className="success-actions"><Link href="/account" className="button button-primary">{t.viewAccount}</Link><HomeSectionLink sectionId="catalog" className="button button-outline">{t.keepBrowsing}</HomeSectionLink></div>
     </section></main>;
   }
 
@@ -51,13 +52,13 @@ export default function Checkout() {
     return <main className="checkout-page"><section className="checkout-empty panel-shell">
       <span className="empty-icon"><ShoppingBag size={27} /></span>
       <h1>{t.checkoutEmpty}</h1><p>{t.checkoutEmptyCopy}</p>
-      <Link href="/#catalog" className="button button-primary">{t.explorePacks}</Link>
+      <HomeSectionLink sectionId="catalog" className="button button-primary">{t.explorePacks}</HomeSectionLink>
     </section></main>;
   }
 
   return <main className="checkout-page"><div className="container checkout-layout">
     <section className="checkout-form-column">
-      <Link href="/#catalog" className="back-link">← {t.backToCatalog}</Link>
+      <HomeSectionLink sectionId="catalog" className="back-link">← {t.backToCatalog}</HomeSectionLink>
       <p className="eyebrow">{t.checkoutEyebrow}</p>
       <h1>{t.checkoutTitle}</h1>
       <p className="checkout-lede">{t.checkoutDescription}</p>
