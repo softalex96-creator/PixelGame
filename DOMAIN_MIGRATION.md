@@ -38,6 +38,8 @@ On 18 August 2026, `pixelgame.pro` was saved as the GitHub Pages custom domain a
 
 The DNS cutover was completed with all four GitHub Pages IPv4 records at the apex and a direct `www → softalex96-creator.github.io` CNAME. Independent resolution returned all four expected IPv4 addresses, the `www` alias resolved through GitHub, and HTTP returned a GitHub Pages response. GitHub certificate provisioning remained in progress immediately after the DNS change; until it completes and HTTPS is enforced, the domain must not be used for authentication, data entry, or any sensitive action.
 
+The GitHub Actions workflow now builds with a root asset base when `GITHUB_PAGES_CUSTOM_DOMAIN=true`, so production assets resolve at `/assets/...` on `pixelgame.pro` rather than the previous repository path `/PixelGame/assets/...`. The existing hash-based client routing remains in place because GitHub Pages is a static host and needs it for direct navigation to account, checkout, and product routes.
+
 ## Rollback
 
 If the custom domain stops serving PixelGame, restore the previous apex record and `www` record exactly as captured before cutover. Do not alter email records as part of rollback. Disable any new OAuth redirect URI that is no longer served by HTTPS.

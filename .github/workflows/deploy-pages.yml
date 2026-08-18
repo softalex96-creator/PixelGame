@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Build static site
-        run: pnpm build:pages
+        run: GITHUB_PAGES_CUSTOM_DOMAIN=true pnpm build:pages
       - name: Configure Pages
         uses: actions/configure-pages@v5
         with:
