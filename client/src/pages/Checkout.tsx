@@ -1,6 +1,7 @@
 import { useLocalCart } from "@/contexts/LocalCartContext";
 import { getLocalizedProduct, useLanguage } from "@/contexts/LanguageContext";
 import { useOrders } from "@/contexts/OrdersContext";
+import { canCompleteSimulatedCheckout, resolveCheckoutViewState, toSimulatedOrderLines } from "@/lib/buyer-state";
 import { formatPrice } from "@/lib/pixelshelf-data";
 import { CheckCircle2, CreditCard, LockKeyhole, ShoppingBag } from "lucide-react";
 import { FormEvent, useState } from "react";
@@ -9,32 +10,24 @@ import { Link, useLocation } from "wouter";
 export default function Checkout() {
   const [, navigate] = useLocation();
   const { lines, subtotal, clearCart } = useLocalCart();
-  const { createOrder, getOrder } = useOrders();
+  const { createOrder, orders } = useOrders();
   const { locale, t } = useLanguage();
   const [email, setEmail] = useState("");
   const [playerTag, setPlayerTag] = useState("");
   const [orderId, setOrderId] = useState<string | null>(() => typeof window === "undefined" ? null : new URLSearchParams(window.location.search).get("success"));
-  const order = orderId ? getOrder(orderId) : undefined;
+  const checkoutView = resolveCheckoutViewState(lines, orders, orderId);
 
   function completePayment(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (!lines.length || !email.trim() || !playerTag.trim()) return;
-    const createdOrder = createOrder(lines.map(({ product, quantity }) => ({
-      productId: product.id,
-      title: product.title,
-      game: product.game,
-      currency: product.currency,
-      bundleLabel: product.bundleLabel,
-      image: product.image,
-      quantity,
-      unitPrice: product.price,
-    })));
+    if (!canCompleteSimulatedCheckout(lines, email, playerTag)) return;
+    const createdOrder = createOrder(toSimulatedOrderLines(lines));
     clearCart();
     setOrderId(createdOrder.id);
     navigate(`/checkout?success=${createdOrder.id}`, { replace: true });
   }
 
-  if (order) {
+  if (checkoutView.kind === "success") {
+    const order = checkoutView.order;
     return <main className="checkout-page"><section className="checkout-success panel-shell">
       <span className="success-orb"><CheckCircle2 size={30} /></span>
       <p className="eyebrow">{t.paymentSuccessEyebrow}</p>
@@ -45,7 +38,7 @@ export default function Checkout() {
     </section></main>;
   }
 
-  if (!lines.length) {
+  if (checkoutView.kind === "empty") {
     return <main className="checkout-page"><section className="checkout-empty panel-shell">
       <span className="empty-icon"><ShoppingBag size={27} /></span>
       <h1>{t.checkoutEmpty}</h1><p>{t.checkoutEmptyCopy}</p>
@@ -64,7 +57,7 @@ export default function Checkout() {
         <label>{t.billingEmail}<input type="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="player@example.com" required /></label>
         <label>{t.playerTag}<input value={playerTag} onChange={(event) => setPlayerTag(event.target.value)} placeholder="NovaRunner#001" required /></label>
         <div className="simulated-method"><CreditCard size={18} /><div><strong>{t.simulatedPayment}</strong><span>{t.simulatedPaymentCopy}</span></div></div>
-        <button className="button button-primary payment-button" type="submit">{t.payDemo} · {formatPrice(subtotal)}</button>
+        <button className="button button-primary payment-button" type="submit" disabled={!canCompleteSimulatedCheckout(lines, email, playerTag)}>{t.payDemo} · {formatPrice(subtotal)}</button>
       </form>
     </section>
     <aside className="checkout-summary panel-shell">
