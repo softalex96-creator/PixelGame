@@ -126,5 +126,6 @@
 - [x] Push the section-navigation correction to GitHub Pages main
 - [x] Create a detailed, maintainable project map covering architecture, routes, state, security, deployment, and key files
 - [x] Assemble a complete local archive of the project with source, configuration, documentation, and safe exclusions
-- [ ] Commit and push the project map to the PixelGame GitHub repository
-- [ ] Verify the archived copy and provide it for download to the user's computer
+- [x] Commit and push the project map to the PixelGame GitHub repository
+- [x] Verify the archived copy and provide it for download to the user's computer
+- [ ] Deliver the verified ZIP archive and SHA-256 checksum to the user for download
