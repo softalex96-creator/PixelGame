@@ -124,3 +124,7 @@
 - [x] Fix the GitHub Pages hash-route duplication in the catalogue navigation and re-verify production routing
 - [x] Save a checkpoint for the GitHub Pages section-navigation correction
 - [x] Push the section-navigation correction to GitHub Pages main
+- [x] Create a detailed, maintainable project map covering architecture, routes, state, security, deployment, and key files
+- [x] Assemble a complete local archive of the project with source, configuration, documentation, and safe exclusions
+- [ ] Commit and push the project map to the PixelGame GitHub repository
+- [ ] Verify the archived copy and provide it for download to the user's computer
