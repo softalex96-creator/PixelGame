@@ -112,3 +112,9 @@
 - [x] Generate and wire four distinct original retro-arcade world artworks with no embedded text, logos or legacy Loadout imagery
 - [x] Re-run desktop/mobile visual verification and public-CDN smoke checks after replacing the catalogue artwork
 - [x] Visually verify all four final retro-arcade source artworks for absence of embedded text, logos and legacy Loadout imagery, then document the evidence
+- [ ] Save a pre-animation backup checkpoint and record its restore URL
+- [ ] Add product rarity metadata and filtering by game, rarity, and product category with regression coverage
+- [ ] Add an original pixel-alien arcade animation inside the hero cabinet screen without copying Space Invaders characters or assets
+- [ ] Strengthen CRT scanlines and pixel-art hover interactions while preserving reduced-motion support
+- [ ] Extend the local cart quantity flow and add a retro confirmation dialog that explicitly confirms only simulated checkout
+- [ ] Verify the updated storefront, filtering, cart and confirmation dialog across desktop and mobile, then publish the update
