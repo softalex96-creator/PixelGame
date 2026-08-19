@@ -141,3 +141,6 @@
 - [x] Create and deliver a full pre-cloned PixelGame bundle with Git metadata for direct extraction into Project LevelUp
 - [x] Deliver the verified full clone bundle and SHA-256 checksum for Project LevelUp extraction
 - [x] Audit the current PixelGame interface with UI/UX Pro Max and document component-level recommendations
+- [x] Remove the pixel-alien animated game screen from the hero without leaving orphaned styling or motion
+- [x] Refresh hero, lane selection, and product card presentation using UI/UX Pro Max while preserving the retro arcade identity
+- [ ] Verify the refreshed storefront across desktop and mobile, then publish the update

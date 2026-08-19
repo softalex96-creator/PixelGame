@@ -25,16 +25,12 @@ async function verifyViewport(browser, { name, viewport }) {
   const laneButtons = page.locator(".arcade-lane-button");
   assert.equal(await laneButtons.count(), 4, `${name}: Arcade Selection Deck must expose four product lanes`);
 
-  const cabinetScreen = page.locator(".cabinet-game-screen");
-  const alienSprites = page.locator(".cabinet-game-screen .pixel-alien");
-  if (name === "desktop") {
-    await cabinetScreen.waitFor();
-    assert.equal(await alienSprites.count(), 5, `${name}: cabinet must render five original pixel-alien sprites`);
-    const animation = await alienSprites.first().evaluate((element) => getComputedStyle(element).animationName);
-    assert.ok(animation.includes("alien-sprite"), `${name}: pixel-alien sprite animation must be enabled`);
-  } else {
-    assert.equal(await cabinetScreen.isHidden(), true, `${name}: cabinet overlay must not crowd the narrow mobile hero`);
-  }
+  assert.equal(await page.locator(".cabinet-game-screen, .pixel-alien, .pixel-defender, .pixel-laser").count(), 0, `${name}: removed hero game-screen animation must not remain in the DOM`);
+  const heroIndex = page.locator(".retro-hero-index");
+  await heroIndex.waitFor();
+  assert.equal(await heroIndex.locator(".retro-hero-stats > div").count(), 3, `${name}: static hero library panel must expose three catalogue facts`);
+  const movingHeroDescendants = await heroIndex.locator("*").evaluateAll((elements) => elements.filter((element) => getComputedStyle(element).animationName !== "none").length);
+  assert.equal(movingHeroDescendants, 0, `${name}: hero library panel must remain static`);
 
   const rarityControls = page.locator(".rarity-filter-row button");
   assert.equal(await rarityControls.count(), 6, `${name}: catalogue must expose all rarity filter controls`);
@@ -57,7 +53,7 @@ async function verifyViewport(browser, { name, viewport }) {
     assert.notEqual(hoverTransform, "none", `${name}: cartridge card must expose a pixel hover transform`);
   }
   await context.close();
-  return `${name}: hero, pixel-alien screen, rarity controls, and sixteen public-CDN product images render`;
+  return `${name}: static hero library, rarity controls, and sixteen public-CDN product images render`;
 }
 
 const browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_PATH ?? "/usr/bin/chromium", args: ["--no-sandbox"] });
