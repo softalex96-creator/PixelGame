@@ -147,4 +147,4 @@
 - [x] Research verified facts and permitted official artwork for the New cartridge drops editorial selection
 - [x] Use a text-led, original CSS cartridge treatment for editorial cards so no third-party game artwork is reused
 - [x] Add a clearly labelled editorial New cartridge drops section to the PixelGame home page without user reviews or ratings
-- [ ] Verify the new editorial section across desktop and mobile, then publish the update
+- [x] Verify the new editorial section across desktop and mobile, then publish the update
