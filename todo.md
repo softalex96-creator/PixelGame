@@ -152,10 +152,11 @@
 - [x] Create and validate a reusable verified-editorial-game-shelf skill with templates and source requirements
 - [x] Deliver the packaged skill for installation and future use
 - [x] Send the validated SKILL.md as an installable skill package to the user
-- [ ] Push the current PixelGame state to GitHub main and verify the deployment workflow
-- [ ] Synchronize the prepared local PixelGame clone/archive with the latest GitHub main state
-- [ ] Run the verified-editorial-game-shelf workflow for a factual indie-game selection using official sources
-- [ ] Validate and record the local sync plus the editorial-skill test outcome
+- [x] Push the current PixelGame state to GitHub main and verify the deployment workflow
+- [x] Synchronize the prepared local PixelGame clone/archive with the latest GitHub main state
+- [x] Run the verified-editorial-game-shelf workflow for a factual indie-game selection using official sources
+- [x] Validate and record the local sync plus the editorial-skill test outcome
+- [x] Refresh a downloadable local clone bundle at the same commit as GitHub main
 - [x] Document the reusable editorial workflow from official research through production verification
 - [x] Document editorial safety boundaries for sources, third-party artwork, reviews, ratings, and store separation
 - [x] Validate the skill with the skill-creator validator before marking the workflow complete
