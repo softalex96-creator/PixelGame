@@ -160,3 +160,7 @@
 - [x] Document the reusable editorial workflow from official research through production verification
 - [x] Document editorial safety boundaries for sources, third-party artwork, reviews, ratings, and store separation
 - [x] Validate the skill with the skill-creator validator before marking the workflow complete
+- [x] Research official factual sources and artwork-safe treatment for a separate retro-game editorial shelf
+- [x] Add refined hover interactions to New cartridge drops cards with reduced-motion support
+- [x] Add a clearly labelled retro-game editorial shelf to the home page without reviews, ratings, or third-party artwork
+- [ ] Verify and publish the interactive editorial update across desktop and mobile

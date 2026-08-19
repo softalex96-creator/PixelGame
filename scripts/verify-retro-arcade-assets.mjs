@@ -35,7 +35,9 @@ async function verifyViewport(browser, { name, viewport }) {
   const rarityControls = page.locator(".rarity-filter-row button");
   assert.equal(await rarityControls.count(), 6, `${name}: catalogue must expose all rarity filter controls`);
 
-  const editorialShelf = page.locator(".editorial-drop-section");
+  const editorialShelves = page.locator(".editorial-drop-section");
+  assert.equal(await editorialShelves.count(), 2, `${name}: homepage must expose current and retro editorial shelves`);
+  const editorialShelf = page.locator("#editorial-drops");
   await editorialShelf.waitFor();
   const editorialCards = editorialShelf.locator(".editorial-drop-card");
   assert.equal(await editorialCards.count(), 3, `${name}: New cartridge drops must contain three factual editorial cards`);
@@ -43,6 +45,14 @@ async function verifyViewport(browser, { name, viewport }) {
   const officialLinks = editorialShelf.locator(".editorial-drop-copy a");
   assert.equal(await officialLinks.count(), 3, `${name}: every editorial card must link to an official page`);
   assert.ok((await officialLinks.evaluateAll((links) => links.every((link) => link.getAttribute("href")?.startsWith("https://") && link.getAttribute("target") === "_blank" && link.getAttribute("rel")?.includes("noreferrer")))), `${name}: editorial links must open verified official sources safely`);
+
+  const retroShelf = page.locator("#retro-classics");
+  const retroCards = retroShelf.locator(".editorial-drop-card");
+  assert.equal(await retroCards.count(), 3, `${name}: retro shelf must contain three factual classic-game cards`);
+  assert.equal(await retroShelf.locator("img").count(), 0, `${name}: retro shelf must not reuse third-party artwork`);
+  const retroLinks = retroShelf.locator(".editorial-drop-copy a");
+  assert.equal(await retroLinks.count(), 3, `${name}: retro shelf must link every card to an official source`);
+  assert.ok((await retroLinks.evaluateAll((links) => links.every((link) => link.getAttribute("href")?.startsWith("https://") && link.getAttribute("target") === "_blank" && link.getAttribute("rel")?.includes("noreferrer")))), `${name}: retro links must open verified official sources safely`);
 
   const productImages = page.locator("#catalog article.retro-product-card .retro-product-image img");
   await productImages.first().waitFor();
@@ -60,9 +70,16 @@ async function verifyViewport(browser, { name, viewport }) {
     await page.waitForTimeout(220);
     const hoverTransform = await firstCard.evaluate((element) => getComputedStyle(element).transform);
     assert.notEqual(hoverTransform, "none", `${name}: cartridge card must expose a pixel hover transform`);
+
+    const firstEditorialCard = editorialCards.first();
+    const editorialTransformBefore = await firstEditorialCard.evaluate((element) => getComputedStyle(element).transform);
+    await firstEditorialCard.hover();
+    await page.waitForTimeout(240);
+    const editorialTransformAfter = await firstEditorialCard.evaluate((element) => getComputedStyle(element).transform);
+    assert.notEqual(editorialTransformAfter, editorialTransformBefore, `${name}: New cartridge drops card must expose a tactile hover transform`);
   }
   await context.close();
-  return `${name}: static hero library, editorial shelf, rarity controls, and sixteen public-CDN product images render`;
+  return `${name}: static hero library, two editorial shelves, rarity controls, hover interaction, and sixteen public-CDN product images render`;
 }
 
 const browser = await chromium.launch({ headless: true, executablePath: process.env.CHROMIUM_PATH ?? "/usr/bin/chromium", args: ["--no-sandbox"] });
