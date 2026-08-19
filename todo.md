@@ -144,3 +144,7 @@
 - [x] Remove the pixel-alien animated game screen from the hero without leaving orphaned styling or motion
 - [x] Refresh hero, lane selection, and product card presentation using UI/UX Pro Max while preserving the retro arcade identity
 - [x] Verify the refreshed storefront across desktop and mobile, then publish the update
+- [x] Research verified facts and permitted official artwork for the New cartridge drops editorial selection
+- [x] Use a text-led, original CSS cartridge treatment for editorial cards so no third-party game artwork is reused
+- [x] Add a clearly labelled editorial New cartridge drops section to the PixelGame home page without user reviews or ratings
+- [ ] Verify the new editorial section across desktop and mobile, then publish the update
